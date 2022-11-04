@@ -11,9 +11,10 @@ PT1. Audio Effect
 // ---- WET/DRY section ---- 
 
 1. Get working throughput into ABLETON, inputs audio, outputs audio [Done]
-2. Make a simple dummy audio effect and have that work 
-3. Create clean blend (wet/dry) functionality and test with dummy audio effect
-
+2. Make a simple dummy audio effect and have that work [Done]
+3. Create clean blend (wet/dry) functionality and test with dummy audio effect [Done]
+4. Refactor
+ 
 // ---- Gain Stage Section ----
 
 4. Create a simple gain stage object and have it work on the wet signal
