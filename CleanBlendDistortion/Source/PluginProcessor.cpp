@@ -143,43 +143,18 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
     
-    // ================ EFFECTS ====================================
+    // ================ EFFECTS =======================================================================
     
     // ================ INITIALISE DRY BUFFER ======================
-    // Duplicate the buffer object by de-referencing it (idk if theres a better way of doing this)
-    /* Initialise using buffer object and number of samples to make a copy of the buffer */
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
-    // From HERE: to initialise with: (juceAudioBuffer<float>& buffer, int totalNumInputChannels)
-    // constructor does nothing really and it's kept as a private variable
-    // FullWaveRectify.process(juceAudioBuffer<float>& buffer, int totalNumInputChannels);
-    for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-    {
-        for (int channel = 0; channel < totalNumInputChannels; ++channel)
-        {
-            auto* channelData = buffer.getWritePointer (channel);
-            
-            // full wave rectifier (if less than 0, return )
-            channelData[sample] = (channelData[sample] > 0) ? channelData[sample] : -channelData[sample];
-        }
-    }
+    FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ MIX IN DRY/WET SIGNALS ======================
-    /* ISSUES:
-     1. there is no assertion or check that the buffer and the dryBuffer have in them the same number of
-     samples */
-    /* activate by using buffer */
     mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMix);
     // =============================================================
 }

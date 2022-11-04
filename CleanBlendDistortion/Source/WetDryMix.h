@@ -13,6 +13,10 @@
 #include <JuceHeader.h>
 
 class WetDryMixEffect
+/* ISSUES:
+ 1. there is no assertion or check that the buffer and the dryBuffer have in them the same number of
+ samples */
+/* activate by using buffer */
 {
 public:
     WetDryMixEffect();

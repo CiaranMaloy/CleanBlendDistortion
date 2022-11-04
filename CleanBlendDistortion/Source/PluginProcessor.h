@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "WetDryMix.h"
+#include "FullWaveRectify.h"
 
 //==============================================================================
 /**
