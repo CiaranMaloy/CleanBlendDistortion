@@ -156,8 +156,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // ================ INITIALISE DRY BUFFER ======================
     // Duplicate the buffer object by de-referencing it (idk if theres a better way of doing this)
     /* Initialise using buffer object and number of samples to make a copy of the buffer */
-    auto dryBuffer = juce::AudioBuffer<float>(); // this doesn't need to be initialised every time
-    dryBuffer.makeCopyOf(buffer);
+    mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
@@ -181,17 +180,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
      1. there is no assertion or check that the buffer and the dryBuffer have in them the same number of
      samples */
     /* activate by using buffer */
-    for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-    {
-        for (int channel = 0; channel < totalNumInputChannels; ++channel)
-        {
-            auto* channelData = buffer.getWritePointer (channel);
-            auto* dryData = dryBuffer.getWritePointer(channel);
-            
-            // full wave rectifier (if less than 0, return )
-            channelData[sample] = mMix * channelData[sample] + (1-mMix) * dryData[sample];
-        }
-    }
+    mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMix);
     // =============================================================
 }
 

@@ -14,6 +14,9 @@
 
 class WetDryMixEffect
 {
+public:
+    WetDryMixEffect();
+    
     void storeDryBuffer(juce::AudioBuffer<float>& buffer, int totalNumInputChannels);
     /* storeDryBuffer will make the member variable mDryBuffer a copy of the input buffer*/
     
@@ -21,5 +24,5 @@ class WetDryMixEffect
     /* mixSignals takes the pointer to buffer object and mixes that signal with the mDryBuffer object*/
     
 private:
-    juce::AudioBuffer<float>& mDryBuffer;
+    juce::AudioBuffer<float> mDryBuffer;
 };

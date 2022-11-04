@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "WetDryMix.h"
 
 //==============================================================================
 /**
@@ -57,7 +58,10 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    // ====== AUDIO EFFECTS ======
     float mMix {0.5};
+    WetDryMixEffect mWDMEffect;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CleanBlendDistortionAudioProcessor)
 };

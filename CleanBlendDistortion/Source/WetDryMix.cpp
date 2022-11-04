@@ -10,7 +10,12 @@
 
 #include "WetDryMix.h"
 
-void WetDryMixEffect::storeDryBuffer(juce::AudioBuffer<float> &buffer, int totalNumInputChannels)
+WetDryMixEffect::WetDryMixEffect()
+{
+    
+}
+
+void WetDryMixEffect::storeDryBuffer(juce::AudioBuffer<float>& buffer, int totalNumInputChannels)
 {
     mDryBuffer.makeCopyOf(buffer);
 }
