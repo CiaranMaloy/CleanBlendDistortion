@@ -57,12 +57,30 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    // ====== Filters and DSP ======
+    void updateFilter();
 
 private:
-    // ====== AUDIO EFFECTS ======
+    // ====== GAIN ======
+    std::array<float, 2> mWetGainOneArr = {1.2, 1.2};
+    std::array<float, 2> mMixArr = {0.5, 0.5};
+    
+    float mGainStageOne {1.2};
     float mMix {0.5};
+    
+    // ====== AUDIO EFFECTS ======
     WetDryMixEffect mWDMEffect;
     
+    // ====== SAMPLERATE =====
+    double mLastSamplerate;
+    
+    // ====== DSP ======
+    juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> mLowPassFilter;
+    
+    // ====== Triggers ======
+    float mMaxAbsVal {0.0};
+    bool mClipping = false;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CleanBlendDistortionAudioProcessor)
 };

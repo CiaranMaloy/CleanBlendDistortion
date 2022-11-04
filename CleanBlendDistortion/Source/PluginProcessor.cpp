@@ -19,7 +19,7 @@ CleanBlendDistortionAudioProcessor::CleanBlendDistortionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 0.1f))
 #endif
 {
 }
@@ -95,6 +95,17 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    mLastSamplerate = sampleRate;
+    
+    // ====== DSP Stuff ======
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    mLowPassFilter.prepare(spec);
+    mLowPassFilter.reset();
+    // ============
+    
 }
 
 void CleanBlendDistortionAudioProcessor::releaseResources()
@@ -129,6 +140,13 @@ bool CleanBlendDistortionAudioProcessor::isBusesLayoutSupported (const BusesLayo
 }
 #endif
 
+void CleanBlendDistortionAudioProcessor::updateFilter()
+{
+    float freq = 400;
+    float res = 0.7;
+    *mLowPassFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(mLastSamplerate, freq, res);
+}
+
 void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -145,6 +163,9 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // ================ EFFECTS =======================================================================
+    // === Set Values
+    mWetGainOneArr[1] = mGainStageOne;
+    mMixArr[1] = mMix;
     
     // ================ INITIALISE DRY BUFFER ======================
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
@@ -154,9 +175,28 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
     // =============================================================
     
-    // ================ MIX IN DRY/WET SIGNALS ======================
-    mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMix);
+    // ================ GAIN STAGE 1 ===============================
+    buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
     // =============================================================
+    
+    // ================ CLIP TRIGGER ===============================
+    mMaxAbsVal = buffer.getMagnitude(0, buffer.getNumSamples());
+    if (mMaxAbsVal > 1.0f) { mClipping = true; }
+    // =============================================================
+    
+    // ================ LOW PASS FILTER ON DRY SIGNAL ===============
+    juce::dsp::AudioBlock<float> block(*mWDMEffect.getBufferPointer());
+    updateFilter();
+    mLowPassFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+    // ==============================================================
+    
+    // ================ MIX IN DRY/WET SIGNALS ======================
+    mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMixArr[0], mMixArr[1]);
+    // =============================================================
+    
+    // === Reset Values
+    mWetGainOneArr[0] = mWetGainOneArr[1];
+    mMixArr[0] = mMixArr[1];
 }
 
 //==============================================================================

@@ -20,10 +20,10 @@ void WetDryMixEffect::storeDryBuffer(juce::AudioBuffer<float>& buffer, int total
     mDryBuffer.makeCopyOf(buffer);
 }
 
-void WetDryMixEffect::mixSignals(juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float mixAmount)
+void WetDryMixEffect::mixSignals(juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float prevMixAmount, float mixAmount)
 {
-    buffer.applyGain(mixAmount);
-    mDryBuffer.applyGain(1.0f-mixAmount);
+    buffer.applyGainRamp(0, buffer.getNumSamples(), prevMixAmount, mixAmount);
+    mDryBuffer.applyGainRamp(0, mDryBuffer.getNumSamples(), 1.0f-prevMixAmount, 1.0f-mixAmount);
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -31,4 +31,8 @@ void WetDryMixEffect::mixSignals(juce::AudioBuffer<float>& buffer, int totalNumI
     }
 }
 
+juce::AudioBuffer<float>* WetDryMixEffect::getBufferPointer()
+{
+    return &mDryBuffer;
+}
 

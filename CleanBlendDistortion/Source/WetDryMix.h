@@ -24,9 +24,10 @@ public:
     void storeDryBuffer(juce::AudioBuffer<float>& buffer, int totalNumInputChannels);
     /* storeDryBuffer will make the member variable mDryBuffer a copy of the input buffer*/
     
-    void mixSignals(juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float mixAmount);
+    void mixSignals(juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float prevMixAmount, float mixAmount);
     /* mixSignals takes the pointer to buffer object and mixes that signal with the mDryBuffer object*/
     
+    juce::AudioBuffer<float>* getBufferPointer();
 private:
     juce::AudioBuffer<float> mDryBuffer;
 };
