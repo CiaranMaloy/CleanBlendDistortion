@@ -150,12 +150,19 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    
+    // From HERE: to
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        {
+            auto* channelData = buffer.getWritePointer (channel);
+            
+            // full wave rectifier (if less than 0, return )
+            channelData[sample] = (channelData[sample] > 0) ? channelData[sample] : -channelData[sample];
+        }
     }
+    // HERE, should be an object
 }
 
 //==============================================================================

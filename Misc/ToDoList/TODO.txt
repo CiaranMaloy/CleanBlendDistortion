@@ -3,14 +3,14 @@ To Do List:
 PT0. Admin:
 
 Make a juce [Done] /
-Make a git repo 
+Make a git repo [Done] /
 
 
 PT1. Audio Effect
 
 // ---- WET/DRY section ---- 
 
-1. Get working throughput into ABLETON, inputs audio, outputs audio 
+1. Get working throughput into ABLETON, inputs audio, outputs audio [Done]
 2. Make a simple dummy audio effect and have that work 
 3. Create clean blend (wet/dry) functionality and test with dummy audio effect
 
