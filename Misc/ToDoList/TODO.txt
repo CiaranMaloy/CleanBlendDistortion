@@ -14,6 +14,8 @@ PT1. Audio Effect
 2. Make a simple dummy audio effect and have that work [Done]
 3. Create clean blend (wet/dry) functionality and test with dummy audio effect [Done]
 4. Refactor
+    a. Create wet/dry blend object as a separate file
+    b. create simple effect object as a separate file
  
 // ---- Gain Stage Section ----
 
