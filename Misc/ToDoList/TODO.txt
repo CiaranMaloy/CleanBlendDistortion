@@ -1,0 +1,45 @@
+To Do List: 
+
+PT0. Admin:
+
+Make a juce [Done] /
+Make a git repo 
+
+
+PT1. Audio Effect
+
+// ---- WET/DRY section ---- 
+
+1. Get working throughput into ABLETON, inputs audio, outputs audio 
+2. Make a simple dummy audio effect and have that work 
+3. Create clean blend (wet/dry) functionality and test with dummy audio effect
+
+// ---- Gain Stage Section ----
+
+4. Create a simple gain stage object and have it work on the wet signal
+    Gain stage must: 
+    -- Be representable in dB
+    -- Be able to add +3dB if necessary
+    -- Have some sort of trigger for if the signal going through is above +/-1
+    [Use tutorial done for gain using the slope function for a whole block to reduce artefacts]
+5. refactor appropriately
+    -- This includes fixing any audio artefacts 
+
+// ---- Fuzz Section ----
+
+6. create a fuzz effect and have it work
+7. make sure that hooks up to wet/dry
+8. refactor
+
+// ---- Overdrive ---- 
+
+9. create a fuzz effect and have it work
+10. make sure that hooks up to wet/dry
+11. refactor
+
+// ---- Filtering --- 
+
+12. Create filter object and use for high/low pass 
+13. Add bypass functionality which switches filter off/on 
+14. Add Link functionality which links the highpass and lowpass filters to the same -3dB point
+
