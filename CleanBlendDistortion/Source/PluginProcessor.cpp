@@ -34,8 +34,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 2.0f, 1.0f));
-    // filter freq
-    // filter res
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", 0.0f, 20000.0f, 500.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER RES", "Dry Filter Res", 0.0f, 2.0f, 0.707f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
     return {params.begin(), params.end()};
@@ -155,8 +155,8 @@ bool CleanBlendDistortionAudioProcessor::isBusesLayoutSupported (const BusesLayo
 
 void CleanBlendDistortionAudioProcessor::updateFilter()
 {
-    float freq = 400;
-    float res = 0.7;
+    float freq = apvts.getRawParameterValue("DRY FILTER FREQ")->load();
+    float res = apvts.getRawParameterValue("DRY FILTER RES")->load();
     *mLowPassFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(mLastSamplerate, freq, res);
 }
 

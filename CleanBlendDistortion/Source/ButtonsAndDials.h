@@ -45,6 +45,8 @@ private:
     // ====== audio processor value tree state attachments =====
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetGainStageOneAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetDryMixAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDryFilterFreqAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDryFilterResAttachment;
     // ====== ======
     
     // ====== Audio Processor Pointer ======
