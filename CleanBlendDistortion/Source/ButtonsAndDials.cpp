@@ -70,6 +70,5 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* l
     labelObj->setText(labelText, juce::NotificationType::dontSendNotification);
     labelObj->setJustificationType(juce::Justification::horizontallyCentred);
     labelObj->attachToComponent(sliderObj, false); // when this is true for some reason the labels show up??
-        
 }
 

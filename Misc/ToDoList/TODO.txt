@@ -54,5 +54,7 @@ dry signal low pass filter
 
 // ---- Value Tree Processor ---- 
 
+Done 06/11/22:
+Everything is connected and working
 
-
+Things need improving though. 
