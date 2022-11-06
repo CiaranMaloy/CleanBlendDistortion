@@ -60,6 +60,9 @@ public:
     
     // ====== Filters and DSP ======
     void updateFilter();
+    
+    // ====== APVTS =====
+    juce::AudioProcessorValueTreeState& getAPVTS() {return apvts;}
 
 private:
     // ====== GAIN ======

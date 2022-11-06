@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /*
@@ -20,7 +21,7 @@
 class ButtonsAndDials  : public juce::Component
 {
 public:
-    ButtonsAndDials();
+    ButtonsAndDials(CleanBlendDistortionAudioProcessor& p);
     ~ButtonsAndDials() override;
 
     void paint (juce::Graphics&) override;
@@ -39,6 +40,15 @@ private:
     juce::Label mWetGainStageOneLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
     
     void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText);
+    // ====== ======
+    
+    // ====== audio processor value tree state attachments =====
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetGainStageOneAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetDryMixAttachment;
+    // ====== ======
+    
+    // ====== Audio Processor Pointer ======
+    CleanBlendDistortionAudioProcessor& audioProcessor;
     // ====== ======
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButtonsAndDials)

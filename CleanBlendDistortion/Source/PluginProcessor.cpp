@@ -34,6 +34,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 2.0f, 1.0f));
+    // filter freq
+    // filter res
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
     return {params.begin(), params.end()};
 }
@@ -173,9 +176,11 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // ================ EFFECTS =======================================================================
+    
+    
     // === Set Values
-    mWetGainOneArr[1] = mGainStageOne;
-    mMixArr[1] = mMix;
+    mWetGainOneArr[1] = apvts.getRawParameterValue("WET GAIN")->load();
+    mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
     
     // ================ INITIALISE DRY BUFFER ======================
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);

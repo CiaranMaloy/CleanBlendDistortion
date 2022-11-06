@@ -12,12 +12,20 @@
 #include "ButtonsAndDials.h"
 
 //==============================================================================
-ButtonsAndDials::ButtonsAndDials() : mWetGainStageOneSlider(), mWetGainStageOneLabel()
+ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mWetGainStageOneSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mWetGainStageOneLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p)
 {
-    addSliderWithLabel(&mWetGainStageOneSlider, &mWetGainStageOneLabel, "Wet Gain 1");
+    // Add sliders and labels
+    addSliderWithLabel(&mWetGainStageOneSlider, &mWetGainStageOneLabel, "Wet Gain");
     addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res");
     addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq");
     addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry");
+    
+    // attach to Audio Processor Value Tree State
+    mWetGainStageOneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET GAIN", mWetGainStageOneSlider);
+    // filter freq
+    // filter res
+    
+    mWetDryMixAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET/DRY", mWetDryMixRatioSlider);
 }
 
 ButtonsAndDials::~ButtonsAndDials()
@@ -47,9 +55,12 @@ void ButtonsAndDials::resized()
 
 void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText)
 {
+    // Create Sliders
     sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 10);
     sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::red);
+    
+    addAndMakeVisible(sliderObj);
     
     // Add label
     // TODO: Currently, the label isn't showing on the effect and idk why
@@ -57,7 +68,6 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* l
     labelObj->setText(labelText, juce::NotificationType::dontSendNotification);
     labelObj->setJustificationType(juce::Justification::horizontallyCentred);
     labelObj->attachToComponent(sliderObj, false); // when this is true for some reason the labels show up??
-    
-    addAndMakeVisible(sliderObj);
+        
 }
 
