@@ -34,7 +34,7 @@ Full wave rectify distortion
 post distortion gain stage
 dry signal low pass filter
 
-// ---- Fuzz Section ----
+// ---- Fuzz Section ---- [done]
 
 6. create a fuzz effect and have it work
 7. make sure that hooks up to wet/dry
@@ -46,9 +46,13 @@ dry signal low pass filter
 10. make sure that hooks up to wet/dry
 11. refactor
 
-// ---- Filtering --- 
+// ---- Filtering --- [TODO: update so that the filter used is useful]
 
 12. Create filter object and use for high/low pass [Done for high pass]
 13. Add bypass functionality which switches filter off/on 
 14. Add Link functionality which links the highpass and lowpass filters to the same -3dB point
+
+// ---- Value Tree Processor ---- 
+
+
 

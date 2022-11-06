@@ -81,6 +81,10 @@ private:
     // ====== Triggers ======
     float mMaxAbsVal {0.0};
     bool mClipping = false;
+    
+    // ====== APVTS ======
+    juce::AudioProcessorValueTreeState apvts;
+    juce::AudioProcessorValueTreeState::ParameterLayout createAPVTSParameterLayout();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CleanBlendDistortionAudioProcessor)
 };

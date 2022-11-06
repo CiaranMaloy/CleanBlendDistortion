@@ -19,13 +19,23 @@ CleanBlendDistortionAudioProcessor::CleanBlendDistortionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 0.1f))
+                       ), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 0.1f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout())
 #endif
 {
 }
 
 CleanBlendDistortionAudioProcessor::~CleanBlendDistortionAudioProcessor()
 {
+}
+
+//==============================================================================
+juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioProcessor::createAPVTSParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 2.0f, 1.0f));
+    
+    return {params.begin(), params.end()};
 }
 
 //==============================================================================
