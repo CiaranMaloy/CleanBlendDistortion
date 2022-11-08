@@ -16,7 +16,7 @@ CleanBlendDistortionAudioProcessorEditor::CleanBlendDistortionAudioProcessorEdit
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     addAndMakeVisible(ButtonsAndDialsObj);
-    setSize (400, 300);
+    setSize (600, 500);
 }
 
 CleanBlendDistortionAudioProcessorEditor::~CleanBlendDistortionAudioProcessorEditor()
@@ -35,8 +35,8 @@ void CleanBlendDistortionAudioProcessorEditor::paint (juce::Graphics& g)
 void CleanBlendDistortionAudioProcessorEditor::resized()
 {
     const float bnd_x_pos_relative = 0;
-    const float bnd_y_pos_relative = 0.5;
+    const float bnd_y_pos_relative = 0.25;
     
-    ButtonsAndDialsObj.setBoundsRelative(bnd_x_pos_relative, bnd_y_pos_relative, 1.0f, 0.25f);
+    ButtonsAndDialsObj.setBoundsRelative(bnd_x_pos_relative, bnd_y_pos_relative, 1.0f, 0.7f);
 }
 

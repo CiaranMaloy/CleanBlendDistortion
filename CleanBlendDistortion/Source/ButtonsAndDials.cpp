@@ -45,9 +45,9 @@ void ButtonsAndDials::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
     const auto startX = 0.f;
-    const auto startY = 0.f;
+    const auto startY = 0.2f;
     const auto dialWidth = 0.25f;
-    const auto dialHeight = 1.0f;
+    const auto dialHeight = 0.75f;
     
     mWetGainStageOneSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
     mDryFilterFreqSlider.setBoundsRelative(startX+dialWidth, startY, dialWidth, dialHeight);
@@ -59,16 +59,17 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* l
 {
     // Create Sliders
     sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 10);
+    sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::red);
     
     addAndMakeVisible(sliderObj);
     
     // Add label
-    // TODO: Currently, the label isn't showing on the effect and idk why
     labelObj->setFont(10.f);
     labelObj->setText(labelText, juce::NotificationType::dontSendNotification);
     labelObj->setJustificationType(juce::Justification::horizontallyCentred);
     labelObj->attachToComponent(sliderObj, false); // when this is true for some reason the labels show up??
+    
+    addAndMakeVisible(labelObj);
 }
 
