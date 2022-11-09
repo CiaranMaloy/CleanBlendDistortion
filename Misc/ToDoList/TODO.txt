@@ -58,3 +58,6 @@ Done 06/11/22:
 Everything is connected and working
 
 Things need improving though. 
+
+// TODO: 09/11/22 : Audio Buffer hadover from audio thread to GUI needs to be done
+
