@@ -16,7 +16,7 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mWetGa
 {
     // Add sliders and labels
     addSliderWithLabel(&mWetGainStageOneSlider, &mWetGainStageOneLabel, "Wet Gain");
-    addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq");
+    addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", 500.0);
     addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res");
     addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry");
     
@@ -55,7 +55,7 @@ void ButtonsAndDials::resized()
     mWetDryMixRatioSlider.setBoundsRelative(startX+3.0f*dialWidth, startY, dialWidth, dialHeight);
 }
 
-void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText)
+void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text, double centre_point)
 {
     // Create Sliders
     sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -65,8 +65,8 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* l
     addAndMakeVisible(sliderObj);
     
     // Add label
-    labelObj->setFont(10.f);
-    labelObj->setText(labelText, juce::NotificationType::dontSendNotification);
+    labelObj->setFont(15.f);
+    labelObj->setText(label_text, juce::NotificationType::dontSendNotification);
     labelObj->setJustificationType(juce::Justification::horizontallyCentred);
     labelObj->attachToComponent(sliderObj, false); // when this is true for some reason the labels show up??
     

@@ -39,7 +39,7 @@ private:
     juce::Slider mWetGainStageOneSlider, mDryFilterFreqSlider, mDryFilterResSlider, mWetDryMixRatioSlider;
     juce::Label mWetGainStageOneLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
     
-    void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText);
+    void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, double centre=0);
     // ====== ======
     
     // ====== audio processor value tree state attachments =====
