@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "ButtonsAndDials.h"
+#include "VisualiserWindow.h"
 
 //==============================================================================
 /**
@@ -28,6 +29,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
+    VisualiserWindow VisualiserWindowObj;
     // ====== ======
     
     CleanBlendDistortionAudioProcessor& audioProcessor;
