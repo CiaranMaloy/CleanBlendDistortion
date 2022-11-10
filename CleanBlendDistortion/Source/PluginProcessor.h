@@ -63,6 +63,9 @@ public:
     
     // ====== APVTS =====
     juce::AudioProcessorValueTreeState& getAPVTS() {return apvts;}
+    
+    // ====== GUI Handover ======
+    void fillCircularBuffer(juce::AudioBuffer<float>* Buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData);
 
 private:
     // ====== GAIN ======
@@ -88,6 +91,12 @@ private:
     // ====== APVTS ======
     juce::AudioProcessorValueTreeState apvts;
     juce::AudioProcessorValueTreeState::ParameterLayout createAPVTSParameterLayout();
+    
+    // ====== GUI Handover ======
+    // circular buffer
+    juce::AudioBuffer<float> mCleanCircBuffer;
+    int mWritePosition;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CleanBlendDistortionAudioProcessor)
 };

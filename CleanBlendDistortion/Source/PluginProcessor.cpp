@@ -119,6 +119,13 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
     mLowPassFilter.reset();
     // ============
     
+    // ====== Circular Buffer ======
+    const int numSeconds = 5;
+    const int numInputChannels = getTotalNumInputChannels();
+    const int circBufferSize = numSeconds * (sampleRate + samplesPerBlock);
+    mCleanCircBuffer.setSize(numInputChannels, circBufferSize);
+    // ============
+    
 }
 
 void CleanBlendDistortionAudioProcessor::releaseResources()
@@ -175,6 +182,16 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    // ================ Circular Buffer ===============================================================
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        const float* bufferData = buffer.getReadPointer(channel);
+        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
+        
+        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
+    }
+    mWritePosition += buffer.getNumSamples();
+    mWritePosition %= mCleanCircBuffer.getNumSamples();
     // ================ EFFECTS =======================================================================
     
     
@@ -212,6 +229,26 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // === Reset Values
     mWetGainOneArr[0] = mWetGainOneArr[1];
     mMixArr[0] = mMixArr[1];
+}
+
+// ====== Circular Buffer ======
+void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<float>* buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData)
+{
+    // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
+    // 1. copy the data from the main buffer to the delay buffer
+    if (circBufferLength > bufferLength + mWritePosition)
+    {
+        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferLength, 1.0, 1.0);
+    }
+    else
+    {
+        const int bufferRemaining = circBufferLength - mWritePosition;
+
+        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
+
+        // now we've come to the end, we need to put the rest of the data back at the start of the buffer
+        buffer->copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
+    }
 }
 
 //==============================================================================
