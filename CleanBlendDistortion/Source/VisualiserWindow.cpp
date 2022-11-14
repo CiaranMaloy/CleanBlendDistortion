@@ -12,7 +12,7 @@
 #include "VisualiserWindow.h"
 
 //==============================================================================
-VisualiserWindow::VisualiserWindow() : outerBounds(), innerBounds()
+VisualiserWindow::VisualiserWindow(CleanBlendDistortionAudioProcessor& p) : outerBounds(), innerBounds(), audioProcessor(p)
 {
     startTimer(100);
 }
@@ -34,7 +34,7 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.setColour(juce::Colours::white);
     g.fillRect(innerBounds);
     
-    auto path_to_paint = generateRandomPath(innerBounds);
+    auto path_to_paint = generateAudioPath(innerBounds);
     g.setColour(juce::Colours::black);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
     
@@ -66,6 +66,25 @@ juce::Path VisualiserWindow::generateRandomPath(juce::Rectangle<float> Rect)
         {
             randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * r.nextFloat());
         }
+    
+    return randomPath;
+}
+
+juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
+{
+    juce::Path randomPath;
+    juce::AudioBuffer<float> displayBuffer = audioProcessor.getBufferForDisplay();
+        
+    int channel = 1;
+    auto* channelData = displayBuffer.getWritePointer(channel);
+    
+    randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * channelData[0]);
+
+    // draw a random line
+    for (int x = Rect.getX() + 1; x < Rect.getRight(); x += 2)
+    {
+        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * channelData[x]);
+    }
     
     return randomPath;
 }

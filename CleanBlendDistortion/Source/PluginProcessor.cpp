@@ -192,6 +192,9 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     }
     mWritePosition += buffer.getNumSamples();
     mWritePosition %= mCleanCircBuffer.getNumSamples();
+    
+    // TODO: Pull this buffer using somethign threadsafe
+    // TODO: Downsampling should also be done here so so that less info needs to be copied out on the thread
     // ================ EFFECTS =======================================================================
     
     
@@ -249,6 +252,22 @@ void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<fl
         // now we've come to the end, we need to put the rest of the data back at the start of the buffer
         buffer->copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
     }
+    
+    // TODO: When the buffer is full, copy into a new object that can be called whenever, like a left and right
+}
+
+// return data from circular buffer
+/* return the last n samples from behind the mWritePosition within the circular buffer */
+juce::AudioBuffer<float> CleanBlendDistortionAudioProcessor::getBufferForDisplay()
+{
+    int N = 10000;
+    juce::AudioBuffer<float> bufferToReturn(getTotalNumInputChannels(), N);
+    
+    for (int channel = 0; channel < getTotalNumInputChannels(); ++channel)
+    {
+        bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
+    }
+    return bufferToReturn;
 }
 
 //==============================================================================

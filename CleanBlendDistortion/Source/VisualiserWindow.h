@@ -11,14 +11,15 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /*
 */
-class VisualiserWindow  : public juce::Component, public juce::Timer
+class VisualiserWindow : public juce::Component, public juce::Timer
 {
 public:
-    VisualiserWindow();
+    VisualiserWindow(CleanBlendDistortionAudioProcessor& p);
     ~VisualiserWindow() override;
 
     void paint (juce::Graphics&) override;
@@ -30,6 +31,8 @@ private:
     juce::Rectangle<float> outerBounds;
     juce::Rectangle<float> innerBounds;
     juce::Path generateRandomPath(juce::Rectangle<float> Rect);
+    juce::Path generateAudioPath(juce::Rectangle<float> Rect);
     
+    CleanBlendDistortionAudioProcessor& audioProcessor;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VisualiserWindow)
 };

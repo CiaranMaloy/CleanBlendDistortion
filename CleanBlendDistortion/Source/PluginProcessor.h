@@ -67,6 +67,9 @@ public:
     // ====== GUI Handover ======
     void fillCircularBuffer(juce::AudioBuffer<float>* Buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData);
 
+    // return an audio buffer that I can display on the GUI
+    juce::AudioBuffer<float> getBufferForDisplay();
+
 private:
     // ====== GAIN ======
     std::array<float, 2> mWetGainOneArr = {1.2, 1.2};
