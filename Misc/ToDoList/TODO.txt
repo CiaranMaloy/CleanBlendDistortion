@@ -64,8 +64,8 @@ Things need improving though.
 // This is the last working state, start from here::
 
 // TODO:
-- Fix waveform offset
-- increase framerate
+- Fix waveform offset (Done)
+- increase framerate (Done)
 - (save when this is done)
 - then get information from the wet buffer
 - then spend some time refactoring todo list so it shows what to actually do
