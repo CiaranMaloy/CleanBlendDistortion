@@ -14,7 +14,7 @@
 //==============================================================================
 VisualiserWindow::VisualiserWindow(CleanBlendDistortionAudioProcessor& p) : outerBounds(), innerBounds(), audioProcessor(p)
 {
-    startTimer(100);
+    startTimer(40);
 }
 
 void VisualiserWindow::timerCallback()
@@ -76,14 +76,15 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
     juce::AudioBuffer<float> displayBuffer = audioProcessor.getBufferForDisplay();
         
     int channel = 1;
+    auto OFFSET = 0.5f;
     auto* channelData = displayBuffer.getWritePointer(channel);
     
-    randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * channelData[0]);
+    randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (channelData[0]+OFFSET));
 
     // draw a random line
-    for (int x = Rect.getX() + 1; x < Rect.getRight(); x += 2)
+    for (int x = Rect.getX() + 1; x < Rect.getRight(); x += 5)
     {
-        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * channelData[x]);
+        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (channelData[x]+OFFSET));
     }
     
     return randomPath;
