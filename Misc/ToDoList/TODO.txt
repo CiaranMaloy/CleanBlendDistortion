@@ -62,3 +62,9 @@ Things need improving though.
 // TODO: 09/11/22 : Audio Buffer hadover from audio thread to GUI needs to be done
 
 // This is the last working state, start from here::
+
+// TODO:
+- Fix waveform offset
+- increase framerate
+- (save when this is done)
+- then get information from the wet buffer
