@@ -68,3 +68,4 @@ Things need improving though.
 - increase framerate
 - (save when this is done)
 - then get information from the wet buffer
+- then spend some time refactoring todo list so it shows what to actually do
