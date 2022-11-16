@@ -69,3 +69,7 @@ Things need improving though.
 - (save when this is done)
 - then get information from the wet buffer
 - then spend some time refactoring todo list so it shows what to actually do
+
+16/11/2022: 
+Currently still crashing - 
+find a previous working version that doesn't crash
