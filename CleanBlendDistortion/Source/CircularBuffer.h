@@ -14,17 +14,17 @@
 class CircularBuffer
 {
 public:
-    CircularBufer();
+    CircularBuffer();
     
     void setConstants(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock);
     
     // ====== Circular Buffer ======
     void fillCircularBuffer(int channel, const int bufferLength, const float* bufferData);
 
-    void updateWritePosition();
+    void updateWritePosition(const int bufferLength);
     
     juce::AudioBuffer<float> getBuffer() {return mCircBuffer;}
-    
+    int getWritePosition() {return mWritePosition;}
     juce::AudioBuffer<float> getBufferForDisplay();
     
 private:

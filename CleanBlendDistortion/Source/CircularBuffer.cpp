@@ -12,10 +12,9 @@
 
 CircularBuffer::CircularBuffer()
 {
-    
 }
 
-CircularBuffer::setConstants(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock)
+void CircularBuffer::setConstants(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock)
 {
     mNumInputChannels = numInputChannels;
     mSampleRate = sampleRate;
@@ -30,7 +29,6 @@ void CircularBuffer::fillCircularBuffer(int channel, const int bufferLength, con
     // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
     // 1. copy the data from the main buffer to the delay buffer
     const int circBufferLength = mCircBuffer.getNumSamples();
-    const float* cleanCircularBufferData = mCircBuffer.getReadPointer(channel);
     
     if (circBufferLength > bufferLength + mWritePosition)
     {
@@ -49,9 +47,9 @@ void CircularBuffer::fillCircularBuffer(int channel, const int bufferLength, con
     // TODO: When the buffer is full, copy into a new object that can be called whenever, like a left and right
 }
 
-void CircularBuffer::updateWritePosition()
+void CircularBuffer::updateWritePosition(const int bufferLength)
 {
-    mWritePosition++;
+    mWritePosition += bufferLength;
     mWritePosition %= mCircBuffer.getNumSamples();
 }
 
