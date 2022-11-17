@@ -31,7 +31,7 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.fillAll(juce::Colours::black);   // clear the background
     g.setColour(juce::Colours::black);
     g.fillRect(outerBounds);
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colours::plum);
     g.fillRect(innerBounds);
     
     auto path_to_paint = generateAudioPath(innerBounds);
@@ -77,14 +77,15 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
         
     const int CHANNEL = 1;
     const float OFFSET = 0.5;
+    const int DOWNSAMPLE = 5;
     auto* channelData = displayBuffer.getWritePointer(CHANNEL);
     
     randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (channelData[0] + OFFSET));
 
     // draw a random line
-    for (int x = Rect.getX() + 1; x < Rect.getRight(); x += 5)
+    for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
     {
-        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (channelData[x]+OFFSET));
+        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (channelData[x*DOWNSAMPLE] + OFFSET));
     }
     
     return randomPath;

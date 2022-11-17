@@ -42,7 +42,7 @@ void CleanBlendDistortionAudioProcessorEditor::resized()
     
     const float vis_x_pos_relative = 0;
     const float vis_y_pos_relative = 0;
-    const float vis_x_width_relative = 0.5;
+    const float vis_x_width_relative = 1;
     const float vis_y_height_relative = bnd_y_pos_relative;
     
     VisualiserWindowObj.setBoundsRelative(vis_x_pos_relative, vis_y_pos_relative, vis_x_width_relative, vis_y_height_relative);
