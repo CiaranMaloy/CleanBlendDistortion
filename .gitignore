@@ -3,7 +3,6 @@
 
 **/Builds
 **/JuceLibraryCode
-*.jucer
 
 ._*
 *.mode1v3

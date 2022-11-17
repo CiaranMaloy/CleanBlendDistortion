@@ -1,64 +1,8 @@
-To Do List: 
+Currently Working:
+Visualiser is working but the waveform needs to move to centre of the screen. 
 
-PT0. Admin:
-
-Make a juce [Done] /
-Make a git repo [Done] /
-
-
-PT1. Audio Effect
-
-// ---- WET/DRY section ---- [Done]
-
-1. Get working throughput into ABLETON, inputs audio, outputs audio [Done]
-2. Make a simple dummy audio effect and have that work [Done]
-3. Create clean blend (wet/dry) functionality and test with dummy audio effect [Done]
-4. Refactor [Done]
-    a. Create wet/dry blend object as a separate file
-    b. create simple effect object as a separate file 
- 
-// ---- Gain Stage Section ---- [Done]
-
-4. Create a simple gain stage object and have it work on the wet signal
-    Gain stage must: 
-    -- Be representable in dB
-    -- Be able to add +3dB if necessary
-    -- Have some sort of trigger for if the signal going through is above +/-1
-    [Use tutorial done for gain using the slope function for a whole block to reduce artefacts]
-5. refactor appropriately
-    -- This includes fixing any audio artefacts 
-
-Done 04/11/22:
-Wet/dry
-Full wave rectify distortion 
-post distortion gain stage
-dry signal low pass filter
-
-// ---- Fuzz Section ---- [done]
-
-6. create a fuzz effect and have it work
-7. make sure that hooks up to wet/dry
-8. refactor
-
-// ---- Overdrive ---- 
-
-9. create a fuzz effect and have it work
-10. make sure that hooks up to wet/dry
-11. refactor
-
-// ---- Filtering --- [TODO: update so that the filter used is useful]
-
-12. Create filter object and use for high/low pass [Done for high pass]
-13. Add bypass functionality which switches filter off/on 
-14. Add Link functionality which links the highpass and lowpass filters to the same -3dB point
-
-// ---- Value Tree Processor ---- 
-
-Done 06/11/22:
-Everything is connected and working
-
-Things need improving though. 
-
-// TODO: 09/11/22 : Audio Buffer hadover from audio thread to GUI needs to be done
-
-// This is the last working state, start from here::
+Things to check: 
+1. Can i centre the dry waveform reliabely?
+2. Can i show the wet waveform? 
+3. Can i show two instances of the visualiser window object? (same waveforms)
+4. Can i show two instances of the visualiser window object? (different waveforms)
