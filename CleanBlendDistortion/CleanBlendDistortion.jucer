@@ -16,6 +16,10 @@
               file="Source/VisualiserWindow.h"/>
       </GROUP>
       <GROUP id="{FBC20833-A73D-CE04-E335-A8369100DBC4}" name="EffectsChain">
+        <FILE id="Ozgzs0" name="CircularBuffer.cpp" compile="1" resource="0"
+              file="Source/CircularBuffer.cpp"/>
+        <FILE id="rl8rl0" name="CircularBuffer.h" compile="0" resource="0"
+              file="Source/CircularBuffer.h"/>
         <FILE id="ico6mh" name="WetDryMix.cpp" compile="1" resource="0" file="Source/WetDryMix.cpp"/>
         <FILE id="gBIq8e" name="WetDryMix.h" compile="0" resource="0" file="Source/WetDryMix.h"/>
         <FILE id="S23gSb" name="FullWaveRectify.cpp" compile="1" resource="0"

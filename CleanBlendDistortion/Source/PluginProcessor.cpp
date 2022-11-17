@@ -219,6 +219,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ Circular Buffer ===============================================================
+    // Reduce this section to be self contained
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         const float* bufferData = buffer.getReadPointer(channel);
@@ -228,6 +229,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     }
     mWritePosition += buffer.getNumSamples();
     mWritePosition %= mCleanCircBuffer.getNumSamples();
+    //
     
     // === Reset Values
     mWetGainOneArr[0] = mWetGainOneArr[1];
