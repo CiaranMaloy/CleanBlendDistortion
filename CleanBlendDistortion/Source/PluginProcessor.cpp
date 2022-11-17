@@ -182,17 +182,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // ================ Circular Buffer ===============================================================
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        const float* bufferData = buffer.getReadPointer(channel);
-        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
-        
-        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
-    }
-    mWritePosition += buffer.getNumSamples();
-    mWritePosition %= mCleanCircBuffer.getNumSamples();
-    
     // TODO: Pull this buffer using somethign threadsafe
     // TODO: Downsampling should also be done here so so that less info needs to be copied out on the thread
     // ================ EFFECTS =======================================================================
@@ -228,6 +217,17 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // ================ MIX IN DRY/WET SIGNALS ======================
     mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMixArr[0], mMixArr[1]);
     // =============================================================
+    
+    // ================ Circular Buffer ===============================================================
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        const float* bufferData = buffer.getReadPointer(channel);
+        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
+        
+        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
+    }
+    mWritePosition += buffer.getNumSamples();
+    mWritePosition %= mCleanCircBuffer.getNumSamples();
     
     // === Reset Values
     mWetGainOneArr[0] = mWetGainOneArr[1];
