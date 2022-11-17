@@ -1,0 +1,20 @@
+Currently Working:
+Visualiser is working but the waveform needs to move to centre of the screen. 
+
+Things to check: 
+1. Can i centre the dry waveform reliabely? //
+
+2. Can i show the wet waveform? 
+-- Its this, once it's deleted and put somewhere else, it crashes
+-- Crashes when put on a midi track
+Test 1. Works on an audio track //
+Test 1a. When on one audio track, the visualiser works
+Test 2. Works on two audio tracks - it does not work on two audio tracks 
+Notes:
+Audio plugin crashes ableton when making two instances of the plugin while trying to log 'wet' data. 
+Audio plugin crashes when i try and use it on a midi instance
+Audio plugin crashes when i use it on an ableton 
+
+
+3. Can i show two instances of the visualiser window object? (same waveforms)
+4. Can i show two instances of the visualiser window object? (different waveforms)

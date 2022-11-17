@@ -182,17 +182,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // ================ Circular Buffer ===============================================================
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        const float* bufferData = buffer.getReadPointer(channel);
-        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
-        
-        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
-    }
-    mWritePosition += buffer.getNumSamples();
-    mWritePosition %= mCleanCircBuffer.getNumSamples();
-    
     // TODO: Pull this buffer using somethign threadsafe
     // TODO: Downsampling should also be done here so so that less info needs to be copied out on the thread
     // ================ EFFECTS =======================================================================
@@ -229,6 +218,17 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMixArr[0], mMixArr[1]);
     // =============================================================
     
+    // ================ Circular Buffer ===============================================================
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        const float* bufferData = buffer.getReadPointer(channel);
+        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
+        
+        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
+    }
+    mWritePosition += buffer.getNumSamples();
+    mWritePosition %= mCleanCircBuffer.getNumSamples();
+    
     // === Reset Values
     mWetGainOneArr[0] = mWetGainOneArr[1];
     mMixArr[0] = mMixArr[1];
@@ -261,11 +261,20 @@ void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<fl
 juce::AudioBuffer<float> CleanBlendDistortionAudioProcessor::getBufferForDisplay()
 {
     int N = 10000;
+    
     juce::AudioBuffer<float> bufferToReturn(getTotalNumInputChannels(), N);
     
     for (int channel = 0; channel < getTotalNumInputChannels(); ++channel)
     {
-        bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
+        if (mWritePosition-N-1 > 0)
+        {
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
+        }
+        else
+        {
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, bufferToReturn.getNumSamples()-(N-mWritePosition), bufferToReturn.getNumSamples());
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, 0, mWritePosition-1);
+        }
     }
     return bufferToReturn;
 }

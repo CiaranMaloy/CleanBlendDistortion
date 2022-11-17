@@ -1,25 +1,12 @@
-Currently Working:
-Visualiser is working but the waveform needs to move to centre of the screen. 
+To Do List: 
 
-Things to check: 
-1. Can i centre the dry waveform reliabely? //
-1a - refactor clean code
-2a, what happens if i try and pull from the delay array when it isn't full
+PT0. Admin:
 
-2. Can i show the wet waveform? 
--- Its this, once it's deleted and put somewhere else, it crashes
--- Crashes when put on a midi track
-Test 1. Works on an audio track //
-Test 1a. When on one audio track, the visualiser works
-Test 2. Works on two audio tracks - it does not work on two audio tracks 
-Notes:
-Audio plugin crashes ableton when making two instances of the plugin while trying to log 'wet' data. 
-Audio plugin crashes when i try and use it on a midi instance
-Audio plugin crashes when i use it on an ableton 
+Make a juce [Done] /
+Make a git repo [Done] /
 
 
-3. Can i show two instances of the visualiser window object? (same waveforms)
-4. Can i show two instances of the visualiser window object? (different waveforms)
+PT1. Audio Effect
 
 // ---- WET/DRY section ---- [Done]
 
@@ -75,14 +62,3 @@ Things need improving though.
 // TODO: 09/11/22 : Audio Buffer hadover from audio thread to GUI needs to be done
 
 // This is the last working state, start from here::
-
-// TODO:
-- Fix waveform offset (Done)
-- increase framerate (Done)
-- (save when this is done)
-- then get information from the wet buffer
-- then spend some time refactoring todo list so it shows what to actually do
-
-16/11/2022: 
-Currently still crashing - 
-find a previous working version that doesn't crash
