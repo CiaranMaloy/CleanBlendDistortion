@@ -14,7 +14,9 @@
 class CircularBuffer
 {
 public:
-    CircularBuffer(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock);
+    CircularBufer();
+    
+    void setConstants(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock);
     
     // ====== Circular Buffer ======
     void fillCircularBuffer(int channel, const int bufferLength, const float* bufferData);

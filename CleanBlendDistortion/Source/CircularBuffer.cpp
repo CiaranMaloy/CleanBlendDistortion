@@ -10,7 +10,12 @@
 
 #include "CircularBuffer.h"
 
-CircularBuffer::CircularBuffer(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock)
+CircularBuffer::CircularBuffer()
+{
+    
+}
+
+CircularBuffer::setConstants(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock)
 {
     mNumInputChannels = numInputChannels;
     mSampleRate = sampleRate;
