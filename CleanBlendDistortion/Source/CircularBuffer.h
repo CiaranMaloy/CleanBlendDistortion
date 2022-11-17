@@ -17,7 +17,7 @@ public:
     CircularBuffer(const int numSeconds, const int numInputChannels, const int sampleRate, const int samplesPerBlock);
     
     // ====== Circular Buffer ======
-    void fillCircularBuffer(int channel, const int bufferLength, const int circBufferLength, const float* bufferData);
+    void fillCircularBuffer(int channel, const int bufferLength, const float* bufferData);
 
     void updateWritePosition();
     

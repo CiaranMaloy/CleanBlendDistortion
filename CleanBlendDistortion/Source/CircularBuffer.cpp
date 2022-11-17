@@ -20,10 +20,11 @@ CircularBuffer::CircularBuffer(const int numSeconds, const int numInputChannels,
 }
 
 // ====== Circular Buffer ======
-void CircularBuffer::fillCircularBuffer(int channel, const int bufferLength, const int circBufferLength, const float* bufferData)
+void CircularBuffer::fillCircularBuffer(int channel, const int bufferLength, const float* bufferData)
 {
     // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
     // 1. copy the data from the main buffer to the delay buffer
+    const int circBufferLength = mCircBuffer.getNumSamples();
     const float* cleanCircularBufferData = mCircBuffer.getReadPointer(channel);
     
     if (circBufferLength > bufferLength + mWritePosition)

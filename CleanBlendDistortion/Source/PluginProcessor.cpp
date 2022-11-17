@@ -121,9 +121,7 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
     
     // ====== Circular Buffer ======
     const int numSeconds = 5;
-    const int numInputChannels = getTotalNumInputChannels();
-    const int circBufferSize = numSeconds * (sampleRate + samplesPerBlock);
-    mCleanCircBuffer.setSize(numInputChannels, circBufferSize);
+    mCircBuffer = CircularBuffer(numSeconds, getTotalNumInputChannels(), sampleRate, samplesPerBlock);
     // ============
     
 }
@@ -223,12 +221,9 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         const float* bufferData = buffer.getReadPointer(channel);
-        const float* cleanCircularBufferData = mCleanCircBuffer.getReadPointer(channel);
-        
-        fillCircularBuffer(&mCleanCircBuffer, channel, buffer.getNumSamples(), mCleanCircBuffer.getNumSamples(), bufferData, cleanCircularBufferData);
+        mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
     }
-    mWritePosition += buffer.getNumSamples();
-    mWritePosition %= mCleanCircBuffer.getNumSamples();
+    mCircBuffer.updateWritePosition();
     //
     
     // === Reset Values
@@ -237,48 +232,32 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
 }
 
 // ====== Circular Buffer ======
-void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<float>* buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData)
-{
-    // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
-    // 1. copy the data from the main buffer to the delay buffer
-    if (circBufferLength > bufferLength + mWritePosition)
-    {
-        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferLength, 1.0, 1.0);
-    }
-    else
-    {
-        const int bufferRemaining = circBufferLength - mWritePosition;
-
-        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
-
-        // now we've come to the end, we need to put the rest of the data back at the start of the buffer
-        buffer->copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
-    }
-    
-    // TODO: When the buffer is full, copy into a new object that can be called whenever, like a left and right
-}
+//void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<float>* buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData)
+//{
+//    // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
+//    // 1. copy the data from the main buffer to the delay buffer
+//    if (circBufferLength > bufferLength + mWritePosition)
+//    {
+//        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferLength, 1.0, 1.0);
+//    }
+//    else
+//    {
+//        const int bufferRemaining = circBufferLength - mWritePosition;
+//
+//        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
+//
+//        // now we've come to the end, we need to put the rest of the data back at the start of the buffer
+//        buffer->copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
+//    }
+//
+//    // TODO: When the buffer is full, copy into a new object that can be called whenever, like a left and right
+//}
 
 // return data from circular buffer
 /* return the last n samples from behind the mWritePosition within the circular buffer */
 juce::AudioBuffer<float> CleanBlendDistortionAudioProcessor::getBufferForDisplay()
 {
-    int N = 10000;
-    
-    juce::AudioBuffer<float> bufferToReturn(getTotalNumInputChannels(), N);
-    
-    for (int channel = 0; channel < getTotalNumInputChannels(); ++channel)
-    {
-        if (mWritePosition-N-1 > 0)
-        {
-            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
-        }
-        else
-        {
-            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, bufferToReturn.getNumSamples()-(N-mWritePosition), bufferToReturn.getNumSamples());
-            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, 0, mWritePosition-1);
-        }
-    }
-    return bufferToReturn;
+    return mCircBuffer.getBufferForDisplay();
 }
 
 //==============================================================================

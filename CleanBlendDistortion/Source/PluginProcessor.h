@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "WetDryMix.h"
 #include "FullWaveRectify.h"
+#include "CircularBuffer.h"
 
 //==============================================================================
 /**
@@ -96,9 +97,8 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createAPVTSParameterLayout();
     
     // ====== GUI Handover ======
-    // circular buffer
-    juce::AudioBuffer<float> mCleanCircBuffer;
-    int mWritePosition;
+    // ====== circular buffer ======
+    CircularBuffer mCircBuffer;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CleanBlendDistortionAudioProcessor)
