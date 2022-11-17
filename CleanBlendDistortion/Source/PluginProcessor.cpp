@@ -261,11 +261,20 @@ void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<fl
 juce::AudioBuffer<float> CleanBlendDistortionAudioProcessor::getBufferForDisplay()
 {
     int N = 10000;
+    
     juce::AudioBuffer<float> bufferToReturn(getTotalNumInputChannels(), N);
     
     for (int channel = 0; channel < getTotalNumInputChannels(); ++channel)
     {
-        bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
+        if (mWritePosition-N-1 > 0)
+        {
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, mWritePosition-N-1, N);
+        }
+        else
+        {
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, bufferToReturn.getNumSamples()-(N-mWritePosition), bufferToReturn.getNumSamples());
+            bufferToReturn.copyFrom(channel, 0, mCleanCircBuffer, channel, 0, mWritePosition-1);
+        }
     }
     return bufferToReturn;
 }

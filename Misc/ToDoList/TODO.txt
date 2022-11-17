@@ -3,6 +3,8 @@ Visualiser is working but the waveform needs to move to centre of the screen.
 
 Things to check: 
 1. Can i centre the dry waveform reliabely? //
+1a - refactor clean code
+2a, what happens if i try and pull from the delay array when it isn't full
 
 2. Can i show the wet waveform? 
 -- Its this, once it's deleted and put somewhere else, it crashes
