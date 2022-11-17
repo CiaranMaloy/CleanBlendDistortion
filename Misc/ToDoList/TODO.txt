@@ -2,7 +2,7 @@ Currently Working:
 Visualiser is working but the waveform needs to move to centre of the screen. 
 
 Things to check: 
-1. Can i centre the dry waveform reliabely?
+1. Can i centre the dry waveform reliabely? //
 2. Can i show the wet waveform? 
 3. Can i show two instances of the visualiser window object? (same waveforms)
 4. Can i show two instances of the visualiser window object? (different waveforms)
