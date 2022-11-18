@@ -36,10 +36,13 @@ private:
         3. wet Gain stage one
         4. mix ratio
      */
+    juce::ToggleButton mDistortionEffectToggle, mFullWaveRectifierToggle;
     juce::Slider mFuzzGainSlider, mDistortionGainSlider, mDryFilterFreqSlider, mDryFilterResSlider, mWetDryMixRatioSlider;
-    juce::Label mFuzzGainLabel, mDistortionGainLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
+    juce::Label mDistortionEffectToggleLabel, mFullWaveRectifierToggleLabel, mFuzzGainLabel, mDistortionGainLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
     
-    void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, double centre=0);
+    
+    void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, double centre_point=0);
+    void addToggleWithLabel(juce::ToggleButton* toggleObj, juce::Label* labelObj, std::string label_text, double centre_point=0);
     // ====== ======
     
     // ====== audio processor value tree state attachments =====

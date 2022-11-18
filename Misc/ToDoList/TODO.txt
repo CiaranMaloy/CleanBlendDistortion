@@ -35,3 +35,10 @@ Focus on audio effect part
 //1. Introduce Fuzz Effect
 //2. Introduce Nonlinear distortion effect
 //3. Fix Low pass filter to start at 20Hz not 0 
+
+18/11/2022: GUI On the backburner
+Focus on audio effect part
+
+0. Add a toggle button to the GUI 
+1. Have that toggle button toggle the distortion part of the plugin
+2. Have a toggle button that toggles a full wave rectifier
