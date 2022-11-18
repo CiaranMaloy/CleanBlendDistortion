@@ -31,11 +31,18 @@ CleanBlendDistortionAudioProcessor::~CleanBlendDistortionAudioProcessor()
 //==============================================================================
 juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioProcessor::createAPVTSParameterLayout()
 {
+    float LPF_MIN = 20.0f;
+    float LPF_MAX = 20000.0f;
+    float LPF_INITIAL_VALUE = 500.0f;
+    float LPF_MID_POINT = 1000.0f;
+    float LPF_SKEW_FACTOR = log(0.5f) / log((LPF_MID_POINT-LPF_MIN)/(LPF_MAX-LPF_MIN));
+    
+    
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FUZZ GAIN", "Fuzz Gain", 0.0f, 4.0f, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DISTORTION GAIN", "Distortion Gain", 0.0f, 4.0f, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", 20.0f, 20000.0f, 500.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", juce::NormalisableRange<float>(LPF_MIN, LPF_MAX, 0.f, LPF_SKEW_FACTOR), LPF_INITIAL_VALUE));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER RES", "Dry Filter Res", 0.0f, 2.0f, 0.707f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
