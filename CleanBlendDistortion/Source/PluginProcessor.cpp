@@ -171,12 +171,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
@@ -216,7 +210,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMixArr[0], mMixArr[1]);
     // =============================================================
     
-    // ================ Circular Buffer ===============================================================
+    // ================ Circular Buffer ============================
     // Reduce this section to be self contained
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -224,34 +218,12 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
     }
     mCircBuffer.updateWritePosition(buffer.getNumSamples());
-    //
+    // =============================================================
     
     // === Reset Values
     mWetGainOneArr[0] = mWetGainOneArr[1];
     mMixArr[0] = mMixArr[1];
 }
-
-// ====== Circular Buffer ======
-//void CleanBlendDistortionAudioProcessor::fillCircularBuffer(juce::AudioBuffer<float>* buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData)
-//{
-//    // What do we do once the delay buffers hae reached the end of their length (it should wrap back around to the front)
-//    // 1. copy the data from the main buffer to the delay buffer
-//    if (circBufferLength > bufferLength + mWritePosition)
-//    {
-//        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferLength, 1.0, 1.0);
-//    }
-//    else
-//    {
-//        const int bufferRemaining = circBufferLength - mWritePosition;
-//
-//        buffer->copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
-//
-//        // now we've come to the end, we need to put the rest of the data back at the start of the buffer
-//        buffer->copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
-//    }
-//
-//    // TODO: When the buffer is full, copy into a new object that can be called whenever, like a left and right
-//}
 
 // return data from circular buffer
 /* return the last n samples from behind the mWritePosition within the circular buffer */
