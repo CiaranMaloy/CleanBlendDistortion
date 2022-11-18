@@ -12,16 +12,19 @@
 #include "ButtonsAndDials.h"
 
 //==============================================================================
-ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mWetGainStageOneSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mWetGainStageOneLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p)
+ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mFuzzGainSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p)
 {
     // Add sliders and labels
-    addSliderWithLabel(&mWetGainStageOneSlider, &mWetGainStageOneLabel, "Wet Gain");
+    addSliderWithLabel(&mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain");
+    addSliderWithLabel(&mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain");
     addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", 500.0);
     addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res");
     addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry");
     
     // attach to Audio Processor Value Tree State
-    mWetGainStageOneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET GAIN", mWetGainStageOneSlider);
+    mFuzzGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "FUZZ GAIN", mFuzzGainSlider);
+    
+    mDistortionGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DISTORTION GAIN", mDistortionGainSlider);
     
     mDryFilterFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DRY FILTER FREQ", mDryFilterFreqSlider);
  
@@ -46,13 +49,14 @@ void ButtonsAndDials::resized()
     // components that your component contains..
     const auto startX = 0.f;
     const auto startY = 0.2f;
-    const auto dialWidth = 0.25f;
+    const auto dialWidth = 0.2f;
     const auto dialHeight = 0.75f;
     
-    mWetGainStageOneSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
-    mDryFilterFreqSlider.setBoundsRelative(startX+dialWidth, startY, dialWidth, dialHeight);
-    mDryFilterResSlider.setBoundsRelative(startX+2.0f*dialWidth, startY, dialWidth, dialHeight);
-    mWetDryMixRatioSlider.setBoundsRelative(startX+3.0f*dialWidth, startY, dialWidth, dialHeight);
+    mFuzzGainSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
+    mDistortionGainSlider.setBoundsRelative(startX+dialWidth, startY, dialWidth, dialHeight);
+    mDryFilterFreqSlider.setBoundsRelative(startX+2.0f*dialWidth, startY, dialWidth, dialHeight);
+    mDryFilterResSlider.setBoundsRelative(startX+3.0f*dialWidth, startY, dialWidth, dialHeight);
+    mWetDryMixRatioSlider.setBoundsRelative(startX+4.0f*dialWidth, startY, dialWidth, dialHeight);
 }
 
 void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text, double centre_point)

@@ -33,7 +33,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 4.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FUZZ GAIN", "Fuzz Gain", 0.0f, 4.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DISTORTION GAIN", "Distortion Gain", 0.0f, 4.0f, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", 20.0f, 20000.0f, 500.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER RES", "Dry Filter Res", 0.0f, 2.0f, 0.707f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
@@ -181,7 +182,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     // === Set Values
     mFuzzGainArr[1] = apvts.getRawParameterValue("FUZZ GAIN")->load();
-    mFuzzGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
+    mDistortionGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
     mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
     
     // ================ INITIALISE DRY BUFFER ======================
@@ -199,7 +200,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     // ================= Asymetrical ===============================
     SquareSignEffect::process(buffer, totalNumInputChannels);
-    FuzzEffect::process(buffer, totalNumInputChannels, mDistortionGainArr[1]);
+    //FuzzEffect::process(buffer, totalNumInputChannels, mDistortionGainArr[1]);
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
@@ -232,7 +233,8 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // === Reset Values
-    mWetGainOneArr[0] = mWetGainOneArr[1];
+    mFuzzGainArr[0] = mFuzzGainArr[1];
+    mDistortionGainArr[0] = mDistortionGainArr[1];
     mMixArr[0] = mMixArr[1];
 }
 

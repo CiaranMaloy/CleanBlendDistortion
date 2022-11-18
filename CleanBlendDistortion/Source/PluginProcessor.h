@@ -75,7 +75,8 @@ public:
 
 private:
     // ====== GAIN ======
-    std::array<float, 2> mWetGainOneArr = {1.2, 1.2};
+    std::array<float, 2> mFuzzGainArr = {1.2, 1.2};
+    std::array<float, 2> mDistortionGainArr = {1.2, 1.2};
     std::array<float, 2> mMixArr = {0.5, 0.5};
     
     float mGainStageOne {1.2};
