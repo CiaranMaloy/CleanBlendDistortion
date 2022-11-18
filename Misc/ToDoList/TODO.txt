@@ -31,7 +31,7 @@ It could be a good idea to separate this project into two with
 17/11/2022: GUI On the backburner
 Focus on audio effect part
 
-0. Refactor and then switch off GUI Code
-1. Introduce Fuzz Effect
-2. Introduce Nonlinear distortion effect
-3. Fix Low pass filter to start at 20Hz not 0 
+//0. Refactor and then switch off GUI Code
+//1. Introduce Fuzz Effect
+//2. Introduce Nonlinear distortion effect
+//3. Fix Low pass filter to start at 20Hz not 0 
