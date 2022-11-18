@@ -33,8 +33,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 2.0f, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", 0.0f, 20000.0f, 500.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET GAIN", "Wet Gain", 0.0f, 4.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", 20.0f, 20000.0f, 500.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER RES", "Dry Filter Res", 0.0f, 2.0f, 0.707f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
@@ -188,11 +188,14 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
-    FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
+    //FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ GAIN STAGE 1 ===============================
     buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
+    // =============================================================
+    // ================= FUZZ ======================================
+    FuzzEffect::process(buffer, totalNumInputChannels, mWetGainOneArr[1]);
     // =============================================================
     
     // ================ CLIP TRIGGER ===============================

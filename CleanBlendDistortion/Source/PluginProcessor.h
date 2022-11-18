@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "WetDryMix.h"
 #include "FullWaveRectify.h"
+#include "Fuzz.h"
 #include "CircularBuffer.h"
 
 //==============================================================================
