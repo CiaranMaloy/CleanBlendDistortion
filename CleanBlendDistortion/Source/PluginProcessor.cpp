@@ -187,10 +187,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
     // =============================================================
     
-    // ================ FULLWAVERECTIFY ============================
-    //FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
-    // =============================================================
-    
     // ================ GAIN STAGE 1 ===============================
     buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
     // =============================================================
@@ -202,6 +198,10 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     // ================= Asymetrical ===============================
     SquareSignEffect::process(buffer, totalNumInputChannels);
+    // =============================================================
+    
+    // ================ FULLWAVERECTIFY ============================
+    FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ CLIP TRIGGER ===============================
