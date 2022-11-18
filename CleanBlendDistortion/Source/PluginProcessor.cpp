@@ -197,6 +197,12 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // ================= FUZZ ======================================
     FuzzEffect::process(buffer, totalNumInputChannels, mWetGainOneArr[1]);
     // =============================================================
+    // ================ GAIN STAGE 2 ===============================
+    //buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
+    // =============================================================
+    // ================= Asymetrical ===============================
+    SquareSignEffect::process(buffer, totalNumInputChannels);
+    // =============================================================
     
     // ================ CLIP TRIGGER ===============================
     mMaxAbsVal = buffer.getMagnitude(0, buffer.getNumSamples());
