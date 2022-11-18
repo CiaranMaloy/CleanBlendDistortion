@@ -257,23 +257,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
 /* return the last n samples from behind the mWritePosition within the circular buffer */
 juce::AudioBuffer<float> CleanBlendDistortionAudioProcessor::getBufferForDisplay()
 {
-    int N = 10000;
-    
-    juce::AudioBuffer<float> bufferToReturn(mCircBuffer.getBuffer().getNumChannels(), N);
-    
-    for (int channel = 0; channel < mCircBuffer.getBuffer().getNumChannels(); ++channel)
-    {
-        if (mCircBuffer.getWritePosition()-N-1 > 0)
-        {
-            bufferToReturn.copyFrom(channel, 0, mCircBuffer.getBuffer(), channel, mCircBuffer.getWritePosition()-N-1, N);
-        }
-        else
-        {
-            bufferToReturn.copyFrom(channel, 0, mCircBuffer.getBuffer(), channel, bufferToReturn.getNumSamples()-(N-mCircBuffer.getWritePosition()), bufferToReturn.getNumSamples());
-            bufferToReturn.copyFrom(channel, 0, mCircBuffer.getBuffer(), channel, 0, mCircBuffer.getWritePosition()-1);
-        }
-    }
-    return bufferToReturn;
+    return mCircBuffer.getBufferForDisplay();
 }
 
 //==============================================================================
