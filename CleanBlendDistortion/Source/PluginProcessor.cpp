@@ -180,7 +180,8 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     
     // === Set Values
-    mWetGainOneArr[1] = apvts.getRawParameterValue("WET GAIN")->load();
+    mFuzzGainArr[1] = apvts.getRawParameterValue("FUZZ GAIN")->load();
+    mFuzzGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
     mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
     
     // ================ INITIALISE DRY BUFFER ======================
@@ -188,20 +189,21 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ GAIN STAGE 1 ===============================
-    buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
+    buffer.applyGainRamp(0, buffer.getNumSamples(), mFuzzGainArr[0], mFuzzGainArr[1]);
     // =============================================================
     // ================= FUZZ ======================================
-    FuzzEffect::process(buffer, totalNumInputChannels, mWetGainOneArr[1]);
+    FuzzEffect::process(buffer, totalNumInputChannels, mFuzzGainArr[1]);
     // =============================================================
     // ================ GAIN STAGE 2 ===============================
-    //buffer.applyGainRamp(0, buffer.getNumSamples(), mWetGainOneArr[0], mWetGainOneArr[1]);
+    buffer.applyGainRamp(0, buffer.getNumSamples(), mDistortionGainArr[0], mDistortionGainArr[1]);
     // =============================================================
     // ================= Asymetrical ===============================
     SquareSignEffect::process(buffer, totalNumInputChannels);
+    FuzzEffect::process(buffer, totalNumInputChannels, mDistortionGainArr[1]);
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
-    FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
+    //FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
     // =============================================================
     
     // ================ CLIP TRIGGER ===============================
