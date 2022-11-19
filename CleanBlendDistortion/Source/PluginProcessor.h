@@ -74,6 +74,9 @@ public:
     juce::AudioBuffer<float> getBufferForDisplay();
 
 private:
+    // ====== ON/OFF ======
+    bool mDistortionEffectBool, mFullWaveRectifierBool;
+    
     // ====== GAIN ======
     std::array<float, 2> mFuzzGainArr = {1.2, 1.2};
     std::array<float, 2> mDistortionGainArr = {1.2, 1.2};

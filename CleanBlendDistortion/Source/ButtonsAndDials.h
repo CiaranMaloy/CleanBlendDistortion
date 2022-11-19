@@ -46,6 +46,11 @@ private:
     // ====== ======
     
     // ====== audio processor value tree state attachments =====
+    // Buttons
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mDistortionEffectToggleAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mFullWaveRectifierToggleAttachment;
+    
+    // Sliders
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mFuzzGainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDistortionGainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetDryMixAttachment;

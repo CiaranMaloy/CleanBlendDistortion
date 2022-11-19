@@ -29,7 +29,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
-    //VisualiserWindow VisualiserWindowObj;
+    VisualiserWindow VisualiserWindowObj;
     // ====== ======
     
     CleanBlendDistortionAudioProcessor& audioProcessor;

@@ -26,6 +26,13 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry");
     
     // attach to Audio Processor Value Tree State
+    // Buttons
+    mDistortionEffectToggleAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(), "DISTORTION TOGGLE", mDistortionEffectToggle);
+    
+    mFullWaveRectifierToggleAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(), "FULL WAVE RECTIFIER TOGGLE", mFullWaveRectifierToggle);
+    
+    
+    // Sliders
     mFuzzGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "FUZZ GAIN", mFuzzGainSlider);
     
     mDistortionGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DISTORTION GAIN", mDistortionGainSlider);
@@ -35,6 +42,7 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     mDryFilterResAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DRY FILTER RES", mDryFilterResSlider);
     
     mWetDryMixAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET/DRY", mWetDryMixRatioSlider);
+    
 }
 
 ButtonsAndDials::~ButtonsAndDials()
@@ -88,7 +96,7 @@ void ButtonsAndDials::addToggleWithLabel(juce::ToggleButton* toggleObj, juce::La
     addAndMakeVisible(toggleObj);
     
     // Add label
-    labelObj->setFont(15.f);
+    labelObj->setFont(10.f);
     labelObj->setText(label_text, juce::NotificationType::dontSendNotification);
     labelObj->setJustificationType(juce::Justification::centredRight);
     labelObj->attachToComponent(toggleObj, false);

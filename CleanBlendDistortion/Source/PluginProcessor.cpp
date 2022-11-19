@@ -39,6 +39,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
+    // Bools
+    params.push_back(std::make_unique<juce::AudioParameterBool>("DISTORTION TOGGLE", "Distortion Toggle", true));
+    params.push_back(std::make_unique<juce::AudioParameterBool>("FULL WAVE RECTIFIER TOGGLE", "Full Wave Rectifier Toggle", true));
+    
+    // Floats
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FUZZ GAIN", "Fuzz Gain", 0.0f, 4.0f, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DISTORTION GAIN", "Distortion Gain", 0.0f, 4.0f, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", juce::NormalisableRange<float>(LPF_MIN, LPF_MAX, 0.f, LPF_SKEW_FACTOR), LPF_INITIAL_VALUE));
@@ -187,6 +192,9 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     
     // === Set Values
+    // TODO: This could be refactored
+    mDistortionEffectBool = apvts.getRawParameterValue("DISTORTION TOGGLE")->load() > 0.5;
+    mFullWaveRectifierBool = apvts.getRawParameterValue("FULL WAVE RECTIFIER TOGGLE")->load() > 0.5;
     mFuzzGainArr[1] = apvts.getRawParameterValue("FUZZ GAIN")->load();
     mDistortionGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
     mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
@@ -195,22 +203,30 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
     // =============================================================
     
-    // ================ GAIN STAGE 1 ===============================
-    buffer.applyGainRamp(0, buffer.getNumSamples(), mFuzzGainArr[0], mFuzzGainArr[1]);
-    // =============================================================
     // ================= FUZZ ======================================
+    // Input Gain
+    buffer.applyGainRamp(0, buffer.getNumSamples(), mFuzzGainArr[0], mFuzzGainArr[1]);
+    // Fuzz
     FuzzEffect::process(buffer, totalNumInputChannels, mFuzzGainArr[1]);
     // =============================================================
-    // ================ GAIN STAGE 2 ===============================
-    buffer.applyGainRamp(0, buffer.getNumSamples(), mDistortionGainArr[0], mDistortionGainArr[1]);
-    // =============================================================
-    // ================= Asymetrical ===============================
-    SquareSignEffect::process(buffer, totalNumInputChannels);
-    //FuzzEffect::process(buffer, totalNumInputChannels, mDistortionGainArr[1]);
+    
+    // ================= DISTORTION ================================
+    if (mDistortionEffectBool)
+    {
+        // Input Gain
+        buffer.applyGainRamp(0, buffer.getNumSamples(), mDistortionGainArr[0], mDistortionGainArr[1]);
+        
+        // Distortion
+        SquareSignEffect::process(buffer, totalNumInputChannels);
+        FuzzEffect::process(buffer, totalNumInputChannels, 1.0f);
+    }
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
-    //FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
+    if (mFullWaveRectifierBool)
+    {
+        FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
+    }
     // =============================================================
     
     // ================ CLIP TRIGGER ===============================
