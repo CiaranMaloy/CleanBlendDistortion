@@ -75,8 +75,8 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
     juce::Path randomPath;
     juce::AudioBuffer<float> displayBuffer = audioProcessor.getBufferForDisplay();
     
-    DBG(displayBuffer.getNumSamples());
-    DBG(Rect.getWidth());
+    //DBG(displayBuffer.getNumSamples());
+    //DBG(Rect.getWidth());
         
     const int CHANNEL = 1;
     const float OFFSET = 0.5;
@@ -88,7 +88,7 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
     // draw a random line
     for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
     {
-        DBG(channelData[x*DOWNSAMPLE]);
+        //DBG(channelData[x*DOWNSAMPLE]);
         randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (channelData[x*DOWNSAMPLE] + OFFSET));
     }
     

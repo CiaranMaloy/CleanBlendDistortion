@@ -222,8 +222,8 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ CLIP TRIGGER ===============================
-    mMaxAbsVal = buffer.getMagnitude(0, buffer.getNumSamples());
-    if (mMaxAbsVal > 1.0f) { mClipping = true; }
+//    mMaxAbsVal = buffer.getMagnitude(0, buffer.getNumSamples());
+//    if (mMaxAbsVal > 1.0f) { mClipping = true; }
     // =============================================================
     
     // ================ LOW PASS FILTER ON DRY SIGNAL ===============
@@ -237,7 +237,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ Circular Buffer ============================
-    // Reduce this section to be self contained
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         const float* bufferData = buffer.getReadPointer(channel);
