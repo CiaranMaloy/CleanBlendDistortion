@@ -19,7 +19,7 @@ CleanBlendDistortionAudioProcessor::CleanBlendDistortionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 0.1f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
+                       ), effectParams(), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 0.1f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
 #endif
 {
 }
@@ -120,6 +120,7 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
     mLastSamplerate = sampleRate;
     
     // ====== DSP Stuff ======
@@ -186,18 +187,9 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // TODO: Pull this buffer using somethign threadsafe
-    // TODO: Downsampling should also be done here so so that less info needs to be copied out on the thread
     // ================ EFFECTS =======================================================================
-    
-    
     // === Set Values
-    // TODO: This could be refactored
-    mDistortionEffectBool = apvts.getRawParameterValue("DISTORTION TOGGLE")->load() > 0.5;
-    mFullWaveRectifierBool = apvts.getRawParameterValue("FULL WAVE RECTIFIER TOGGLE")->load() > 0.5;
-    mFuzzGainArr[1] = apvts.getRawParameterValue("FUZZ GAIN")->load();
-    mDistortionGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
-    mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
+    updateEffectParameters();
     
     // ================ INITIALISE DRY BUFFER ======================
     mWDMEffect.storeDryBuffer(buffer, totalNumInputChannels);
@@ -205,16 +197,16 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     // ================= FUZZ ======================================
     // Input Gain
-    buffer.applyGainRamp(0, buffer.getNumSamples(), mFuzzGainArr[0], mFuzzGainArr[1]);
+    buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzGainArr[0], effectParams.mFuzzGainArr[1]);
     // Fuzz
-    WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, mFuzzGainArr[1]);
+    WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, effectParams.mFuzzGainArr[1]);
     // =============================================================
     
     // ================= DISTORTION ================================
-    if (mDistortionEffectBool)
+    if (effectParams.mDistortionEffectBool)
     {
         // Input Gain
-        buffer.applyGainRamp(0, buffer.getNumSamples(), mDistortionGainArr[0], mDistortionGainArr[1]);
+        buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mDistortionGainArr[0], effectParams.mDistortionGainArr[1]);
         
         // Distortion
         WaveShaping::process(WaveShaping::EffectType::distortion, buffer, totalNumInputChannels);
@@ -223,7 +215,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
-    if (mFullWaveRectifierBool)
+    if (effectParams.mFullWaveRectifierBool)
     {
         WaveShaping::process(WaveShaping::EffectType::fullWaveRectifier, buffer, totalNumInputChannels);
     }
@@ -241,7 +233,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // ==============================================================
     
     // ================ MIX IN DRY/WET SIGNALS ======================
-    mWDMEffect.mixSignals(buffer, totalNumInputChannels, mMixArr[0], mMixArr[1]);
+    mWDMEffect.mixSignals(buffer, totalNumInputChannels, effectParams.mMixArr[0], effectParams.mMixArr[1]);
     // =============================================================
     
     // ================ Circular Buffer ============================
@@ -253,11 +245,24 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     }
     mCircBuffer.updateWritePosition(buffer.getNumSamples());
     // =============================================================
+}
+
+// Update internal parameters
+void CleanBlendDistortionAudioProcessor::updateEffectParameters()
+{
+    // Update old parameters (will crash if not pre-declaired)
+    effectParams.mFuzzGainArr[0] = effectParams.mFuzzGainArr[1];
+    effectParams.mDistortionGainArr[0] = effectParams.mDistortionGainArr[1];
+    effectParams.mMixArr[0] = effectParams.mMixArr[1];
     
-    // === Reset Values
-    mFuzzGainArr[0] = mFuzzGainArr[1];
-    mDistortionGainArr[0] = mDistortionGainArr[1];
-    mMixArr[0] = mMixArr[1];
+    // Update new parameters
+    // TODO: This could be refactored
+    effectParams.mDistortionEffectBool = apvts.getRawParameterValue("DISTORTION TOGGLE")->load() > 0.5;
+    effectParams.mFullWaveRectifierBool = apvts.getRawParameterValue("FULL WAVE RECTIFIER TOGGLE")->load() > 0.5;
+    effectParams.mFuzzGainArr[1] = apvts.getRawParameterValue("FUZZ GAIN")->load();
+    effectParams.mDistortionGainArr[1] = apvts.getRawParameterValue("DISTORTION GAIN")->load();
+    effectParams.mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
+    
 }
 
 // return data from circular buffer

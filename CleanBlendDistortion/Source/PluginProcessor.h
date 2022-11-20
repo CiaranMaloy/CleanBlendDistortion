@@ -72,16 +72,22 @@ public:
     juce::AudioBuffer<float> getBufferForDisplay();
 
 private:
-    // ====== ON/OFF ======
-    bool mDistortionEffectBool, mFullWaveRectifierBool;
-    
-    // ====== GAIN ======
-    std::array<float, 2> mFuzzGainArr = {1.2, 1.2};
-    std::array<float, 2> mDistortionGainArr = {1.2, 1.2};
-    std::array<float, 2> mMixArr = {0.5, 0.5};
-    
-    float mGainStageOne {1.2};
-    float mMix {0.5};
+    // ====== Audio Effect Parameters Structure ======
+    struct EffectParameters
+    {
+        // ====== ON/OFF ======
+        bool mDistortionEffectBool, mFullWaveRectifierBool;
+        
+        // ====== GAIN ======
+        std::array<float, 2> mFuzzGainArr = {1.2, 1.2};
+        std::array<float, 2> mDistortionGainArr = {1.2, 1.2};
+        std::array<float, 2> mMixArr = {0.5, 0.5};
+        
+        float mGainStageOne {1.2};
+        float mMix {0.5};
+    };
+    EffectParameters effectParams;
+    void updateEffectParameters();
     
     // ====== AUDIO EFFECTS ======
     WetDryMixEffect mWDMEffect;
