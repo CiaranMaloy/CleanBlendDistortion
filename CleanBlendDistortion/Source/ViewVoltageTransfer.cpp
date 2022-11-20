@@ -14,8 +14,6 @@
 //==============================================================================
 ViewVoltageTransfer::ViewVoltageTransfer()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
 }
 
 ViewVoltageTransfer::~ViewVoltageTransfer()
@@ -69,7 +67,7 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
     juce::AudioBuffer<float> mDisplayBuffer;
     int CHANNEL = 0;
     int NCHANNELS = 1;
-    int N = 1000;
+    int N = 500;
     mDisplayBuffer.setSize(NCHANNELS, N);
     juce::Path displayPath;
     
@@ -77,8 +75,8 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
     DBG("Write to buffer");
     for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
     {
-        //float input = (static_cast<float>(sample) - static_cast<float>(N)/2.0f)/(static_cast<float>(N)/2.0f);
-        float input = 0.0f;
+        float input = (static_cast<float>(sample) - static_cast<float>(N)/2.0f)/(static_cast<float>(N)/2.0f);
+        //float input = 0.5f;
         DBG(input);
         mDisplayBuffer.setSample(CHANNEL, sample, input);
     }

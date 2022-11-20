@@ -10,14 +10,14 @@
 
 #include "WaveShaping.h"
 
+// For use in audio buffer
 void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int totalNumInputChannels, float gain)
 {
-    for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+    for (int channel = 0; channel < totalNumInputChannels; channel++)
     {
-        for (int channel = 0; channel < totalNumInputChannels; channel++)
+        float* channelData = buffer.getWritePointer (channel);
+        for (int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
-            float* channelData = buffer.getWritePointer (channel);
-            
             switch (type)
             {
                 case EffectType::fuzz:
@@ -35,6 +35,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
         }
     }
 }
+
 
 // Fuzz
 float WaveShaping::fexp1(float sampleValue, float gain=1.0)
