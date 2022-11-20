@@ -45,4 +45,5 @@ Focus on audio effect part
 
 19/11/2022: Refactoring
 
-Move all distortion effects 
+//0. Move all distortion effects to a waveshaping class
+//1. Move all parameters into a managed structure
