@@ -27,7 +27,7 @@ Crashes:
 The effect crashes if I put it on when there is already audio playing
 It could be a good idea to separate this project into two with 
 
-
+//==========
 17/11/2022: GUI On the backburner
 Focus on audio effect part
 
@@ -42,3 +42,7 @@ Focus on audio effect part
 //0. Add a toggle button to the GUI 
 //1. Have that toggle button toggle the distortion part of the plugin
 //2. Have a toggle button that toggles a full wave rectifier
+
+19/11/2022: Pre-gain button and refactoring
+
+0. 

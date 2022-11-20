@@ -16,6 +16,8 @@
               file="Source/VisualiserWindow.h"/>
       </GROUP>
       <GROUP id="{FBC20833-A73D-CE04-E335-A8369100DBC4}" name="EffectsChain">
+        <FILE id="DQaajx" name="WaveShaping.cpp" compile="1" resource="0" file="Source/WaveShaping.cpp"/>
+        <FILE id="wLmV5u" name="WaveShaping.h" compile="0" resource="0" file="Source/WaveShaping.h"/>
         <FILE id="Pw1Ynz" name="SquareSign.cpp" compile="1" resource="0" file="Source/SquareSign.cpp"/>
         <FILE id="Pteqb8" name="SquareSign.h" compile="0" resource="0" file="Source/SquareSign.h"/>
         <FILE id="ampY78" name="Fuzz.cpp" compile="1" resource="0" file="Source/Fuzz.cpp"/>
