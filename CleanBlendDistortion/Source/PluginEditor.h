@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "ButtonsAndDials.h"
 #include "VisualiserWindow.h"
+#include "ViewVoltageTransfer.h"
 
 //==============================================================================
 /**
@@ -29,6 +30,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
+    ViewVoltageTransfer VoltageTransferObj;
     //VisualiserWindow VisualiserWindowObj;
     // ====== ======
     

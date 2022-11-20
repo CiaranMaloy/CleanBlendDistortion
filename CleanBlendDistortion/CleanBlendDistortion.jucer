@@ -10,6 +10,10 @@
               file="Source/ButtonsAndDials.cpp"/>
         <FILE id="nFntOX" name="ButtonsAndDials.h" compile="0" resource="0"
               file="Source/ButtonsAndDials.h"/>
+        <FILE id="XIS1tj" name="ViewVoltageTransfer.cpp" compile="1" resource="0"
+              file="Source/ViewVoltageTransfer.cpp"/>
+        <FILE id="KUamBp" name="ViewVoltageTransfer.h" compile="0" resource="0"
+              file="Source/ViewVoltageTransfer.h"/>
         <FILE id="Bg4dwO" name="VisualiserWindow.cpp" compile="1" resource="0"
               file="Source/VisualiserWindow.cpp"/>
         <FILE id="xNrXZz" name="VisualiserWindow.h" compile="0" resource="0"

@@ -16,6 +16,7 @@ CleanBlendDistortionAudioProcessorEditor::CleanBlendDistortionAudioProcessorEdit
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     addAndMakeVisible(ButtonsAndDialsObj);
+    addAndMakeVisible(VoltageTransferObj);
     //addAndMakeVisible(VisualiserWindowObj);
     setSize (900, 400);
 }
@@ -42,9 +43,16 @@ void CleanBlendDistortionAudioProcessorEditor::resized()
     
 //    const float vis_x_pos_relative = 0;
 //    const float vis_y_pos_relative = 0;
-//    const float vis_x_width_relative = 1;
+//    const float vis_x_width_relative = 0.5;
 //    const float vis_y_height_relative = bnd_y_pos_relative;
 //    
 //    VisualiserWindowObj.setBoundsRelative(vis_x_pos_relative, vis_y_pos_relative, vis_x_width_relative, vis_y_height_relative);
+    
+    const float volt_x_pos_relative = 0;
+    const float volt_y_pos_relative = 0;
+    const float volt_x_width_relative = 0.1;
+    const float volt_y_height_relative = 0.1;
+    
+    VoltageTransferObj.setBoundsRelative(volt_x_pos_relative, volt_y_pos_relative, volt_x_width_relative, volt_y_height_relative);
 }
 
