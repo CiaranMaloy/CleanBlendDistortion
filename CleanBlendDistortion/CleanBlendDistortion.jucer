@@ -18,20 +18,12 @@
       <GROUP id="{FBC20833-A73D-CE04-E335-A8369100DBC4}" name="EffectsChain">
         <FILE id="DQaajx" name="WaveShaping.cpp" compile="1" resource="0" file="Source/WaveShaping.cpp"/>
         <FILE id="wLmV5u" name="WaveShaping.h" compile="0" resource="0" file="Source/WaveShaping.h"/>
-        <FILE id="Pw1Ynz" name="SquareSign.cpp" compile="1" resource="0" file="Source/SquareSign.cpp"/>
-        <FILE id="Pteqb8" name="SquareSign.h" compile="0" resource="0" file="Source/SquareSign.h"/>
-        <FILE id="ampY78" name="Fuzz.cpp" compile="1" resource="0" file="Source/Fuzz.cpp"/>
-        <FILE id="dNmELv" name="Fuzz.h" compile="0" resource="0" file="Source/Fuzz.h"/>
         <FILE id="Ozgzs0" name="CircularBuffer.cpp" compile="1" resource="0"
               file="Source/CircularBuffer.cpp"/>
         <FILE id="rl8rl0" name="CircularBuffer.h" compile="0" resource="0"
               file="Source/CircularBuffer.h"/>
         <FILE id="ico6mh" name="WetDryMix.cpp" compile="1" resource="0" file="Source/WetDryMix.cpp"/>
         <FILE id="gBIq8e" name="WetDryMix.h" compile="0" resource="0" file="Source/WetDryMix.h"/>
-        <FILE id="S23gSb" name="FullWaveRectify.cpp" compile="1" resource="0"
-              file="Source/FullWaveRectify.cpp"/>
-        <FILE id="ObxjN5" name="FullWaveRectify.h" compile="0" resource="0"
-              file="Source/FullWaveRectify.h"/>
       </GROUP>
       <FILE id="FfmQlp" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
