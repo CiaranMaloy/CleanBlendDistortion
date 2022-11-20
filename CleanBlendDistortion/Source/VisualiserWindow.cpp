@@ -14,7 +14,7 @@
 //==============================================================================
 VisualiserWindow::VisualiserWindow(CleanBlendDistortionAudioProcessor& p) : outerBounds(), innerBounds(), audioProcessor(p)
 {
-    startTimer(40);
+    startTimer(20);
 }
 
 void VisualiserWindow::timerCallback()
@@ -31,11 +31,11 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.fillAll(juce::Colours::black);   // clear the background
     g.setColour(juce::Colours::black);
     g.fillRect(outerBounds);
-    g.setColour(juce::Colours::plum);
+    g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
     
     auto path_to_paint = generateAudioPath(innerBounds);
-    g.setColour(juce::Colours::black);
+    g.setColour(juce::Colours::white);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
     
 }
@@ -45,8 +45,8 @@ void VisualiserWindow::resized()
     outerBounds.setBounds(0, 0, getWidth(), getHeight());
     
     // Place visualiser window inside
-    auto reduceRatioX = 0.1;
-    auto reduceRatioY = 0.2;
+    auto reduceRatioX = 0.0f;
+    auto reduceRatioY = 0.1f;
     auto reduceX = getWidth()*reduceRatioX;
     auto reduceY = getHeight()*reduceRatioY;
     
@@ -80,7 +80,7 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
         
     const int CHANNEL = 1;
     const float OFFSET = 0.5;
-    const int DOWNSAMPLE = 5;
+    const int DOWNSAMPLE = 10;
     auto* channelData = displayBuffer.getWritePointer(CHANNEL);
     
     randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (channelData[0] + OFFSET));

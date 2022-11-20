@@ -72,12 +72,9 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
     juce::Path displayPath;
     
     // === writer -1 to 1 in the buffer
-    DBG("Write to buffer");
     for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
     {
         float input = (static_cast<float>(sample) - static_cast<float>(N)/2.0f)/(static_cast<float>(N)/2.0f);
-        //float input = 0.5f;
-        DBG(input);
         mDisplayBuffer.setSample(CHANNEL, sample, input);
     }
     // ======
@@ -99,17 +96,10 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
             break;
     }
     
-    auto* channelData = mDisplayBuffer.getReadPointer(CHANNEL);
-    for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
-    {
-        DBG(channelData[sample]);
-    }
-    
     const int width = Rect.getRight() - Rect.getX();
-    DBG(width);
     const float OFFSET = 0.5;
     const int DOWNSAMPLE = N/width;
-    //auto* channelData = mDisplayBuffer.getReadPointer(CHANNEL);
+    auto* channelData = mDisplayBuffer.getReadPointer(CHANNEL);
     
     displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (channelData[0] + OFFSET));
 

@@ -78,7 +78,7 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* l
     // Create Sliders
     sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::red);
+    sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::white);
     
     addAndMakeVisible(sliderObj);
     
