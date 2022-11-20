@@ -10,9 +10,7 @@
 
 #include <JuceHeader.h>
 #include "WetDryMix.h"
-#include "FullWaveRectify.h"
-#include "Fuzz.h"
-#include "SquareSign.h"
+#include "WaveShaping.h"
 #include "CircularBuffer.h"
 
 //==============================================================================

@@ -27,6 +27,10 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
                 case EffectType::distortion:
                     channelData[sample] = asqrt_sqs(channelData[sample]);
                     break;
+                    
+                case EffectType::fullWaveRectifier:
+                    channelData[sample] = fwr(channelData[sample]);
+                    break;
             }
         }
     }
@@ -53,6 +57,11 @@ float WaveShaping::sqs(float sampleValue)
 float WaveShaping::asqrt_sqs(float sampleValue)
 {
     return (sampleValue > 0) ? asqrt(sampleValue) : sqs(sampleValue);
+}
+
+float WaveShaping::fwr(float sampleValue)
+{
+    return (sampleValue > 0) ? sampleValue : -sampleValue;
 }
 
 // Maths

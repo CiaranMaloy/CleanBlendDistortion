@@ -19,10 +19,11 @@ public:
     enum EffectType
     {
         fuzz,
-        distortion
-    }
+        distortion,
+        fullWaveRectifier
+    };
     
-    static void process(EffectType type, juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float gain);
+    static void process(EffectType type, juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float gain=1.0f);
     
 private:
     // Fuzz
@@ -34,6 +35,7 @@ private:
     
     // Asymetrical
     static float asqrt_sqs(float sampleValue);
+    static float fwr(float sampleValue);
     
     // Maths
     static float sgn(float x);

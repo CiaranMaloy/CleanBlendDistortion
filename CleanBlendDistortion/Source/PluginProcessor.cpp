@@ -207,7 +207,7 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // Input Gain
     buffer.applyGainRamp(0, buffer.getNumSamples(), mFuzzGainArr[0], mFuzzGainArr[1]);
     // Fuzz
-    FuzzEffect::process(buffer, totalNumInputChannels, mFuzzGainArr[1]);
+    WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, mFuzzGainArr[1]);
     // =============================================================
     
     // ================= DISTORTION ================================
@@ -217,15 +217,15 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         buffer.applyGainRamp(0, buffer.getNumSamples(), mDistortionGainArr[0], mDistortionGainArr[1]);
         
         // Distortion
-        SquareSignEffect::process(buffer, totalNumInputChannels);
-        FuzzEffect::process(buffer, totalNumInputChannels, 1.0f);
+        WaveShaping::process(WaveShaping::EffectType::distortion, buffer, totalNumInputChannels);
+        WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels);
     }
     // =============================================================
     
     // ================ FULLWAVERECTIFY ============================
     if (mFullWaveRectifierBool)
     {
-        FullWaveRectifyEffect::process(buffer, totalNumInputChannels);
+        WaveShaping::process(WaveShaping::EffectType::fullWaveRectifier, buffer, totalNumInputChannels);
     }
     // =============================================================
     

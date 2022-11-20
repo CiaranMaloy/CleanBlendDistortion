@@ -43,6 +43,6 @@ Focus on audio effect part
 //1. Have that toggle button toggle the distortion part of the plugin
 //2. Have a toggle button that toggles a full wave rectifier
 
-19/11/2022: Pre-gain button and refactoring
+19/11/2022: Refactoring
 
-0. 
+Move all distortion effects 
