@@ -16,7 +16,6 @@ ViewVoltageTransfer::ViewVoltageTransfer()
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-
 }
 
 ViewVoltageTransfer::~ViewVoltageTransfer()
@@ -31,7 +30,7 @@ void ViewVoltageTransfer::paint (juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
     
-    auto path_to_paint = generateVoltageTransferPath(innerBounds);
+    auto path_to_paint = generateVoltageTransferPath(innerBounds, WaveShaping::EffectType::fullWaveRectifier);
     g.setColour(juce::Colours::white);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
 }
@@ -51,16 +50,77 @@ void ViewVoltageTransfer::resized()
 
 juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<float> Rect)
 {
-        juce::Path randomPath;
+        juce::Path displayPath;
         juce::Random r;
 
-        randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * r.nextFloat());
+        displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * r.nextFloat());
 
         // draw a random line
         for (auto x = Rect.getX() + 1; x < Rect.getRight(); x += 2)
         {
-            randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * r.nextFloat());
+            displayPath.lineTo(x, Rect.getY() + Rect.getHeight() * r.nextFloat());
         }
     
-    return randomPath;
+    return displayPath;
+}
+
+juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<float> Rect, WaveShaping::EffectType type)
+{
+    juce::AudioBuffer<float> mDisplayBuffer;
+    int CHANNEL = 0;
+    int NCHANNELS = 1;
+    int N = 1000;
+    mDisplayBuffer.setSize(NCHANNELS, N);
+    juce::Path displayPath;
+    
+    // === writer -1 to 1 in the buffer
+    DBG("Write to buffer");
+    for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
+    {
+        //float input = (static_cast<float>(sample) - static_cast<float>(N)/2.0f)/(static_cast<float>(N)/2.0f);
+        float input = 0.0f;
+        DBG(input);
+        mDisplayBuffer.setSample(CHANNEL, sample, input);
+    }
+    // ======
+    // ====== Put the audio throught the effect
+    
+    switch (type)
+    {
+        case WaveShaping::EffectType::distortion:
+            WaveShaping::process(WaveShaping::EffectType::distortion, mDisplayBuffer, CHANNEL);
+            WaveShaping::process(WaveShaping::EffectType::fuzz, mDisplayBuffer, CHANNEL);
+            break;
+        
+        case WaveShaping::EffectType::fuzz:
+            WaveShaping::process(WaveShaping::EffectType::fuzz, mDisplayBuffer, CHANNEL);
+            break;
+            
+        case WaveShaping::EffectType::fullWaveRectifier:
+            WaveShaping::process(WaveShaping::EffectType::fullWaveRectifier, mDisplayBuffer, CHANNEL);
+            break;
+    }
+    
+    auto* channelData = mDisplayBuffer.getReadPointer(CHANNEL);
+    for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
+    {
+        DBG(channelData[sample]);
+    }
+    
+    const int width = Rect.getRight() - Rect.getX();
+    DBG(width);
+    const float OFFSET = 0.5;
+    const int DOWNSAMPLE = N/width;
+    //auto* channelData = mDisplayBuffer.getReadPointer(CHANNEL);
+    
+    displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (channelData[0] + OFFSET));
+
+    // draw a random line
+    for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
+    {
+        //DBG(channelData[x*DOWNSAMPLE]);
+        displayPath.lineTo(x, Rect.getY() + Rect.getHeight() * (channelData[x*DOWNSAMPLE] + OFFSET));
+    }
+    
+    return displayPath;
 }

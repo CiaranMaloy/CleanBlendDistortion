@@ -30,8 +30,12 @@ private:
     juce::Rectangle<float> outerBounds;
     juce::Rectangle<float> innerBounds;
     
+    // == member variable buffer
+//    juce::AudioBuffer<float> mDisplayBuffer;
+    
     // == voltage transfer
     juce::Path generateVoltageTransferPath(juce::Rectangle<float> Rect);
+    juce::Path generateVoltageTransferPath(juce::Rectangle<float> Rect, WaveShaping::EffectType type);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ViewVoltageTransfer)
 };

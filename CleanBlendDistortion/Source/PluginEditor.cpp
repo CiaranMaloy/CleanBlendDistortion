@@ -50,8 +50,8 @@ void CleanBlendDistortionAudioProcessorEditor::resized()
     
     const float volt_x_pos_relative = 0;
     const float volt_y_pos_relative = 0;
-    const float volt_x_width_relative = 0.1;
-    const float volt_y_height_relative = 0.1;
+    const float volt_x_width_relative = 0.5;
+    const float volt_y_height_relative = 0.5;
     
     VoltageTransferObj.setBoundsRelative(volt_x_pos_relative, volt_y_pos_relative, volt_x_width_relative, volt_y_height_relative);
 }

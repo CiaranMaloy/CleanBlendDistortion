@@ -14,7 +14,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
 {
     for (int sample = 0; sample < buffer.getNumSamples(); sample++)
     {
-        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        for (int channel = 0; channel < totalNumInputChannels; channel++)
         {
             float* channelData = buffer.getWritePointer (channel);
             
