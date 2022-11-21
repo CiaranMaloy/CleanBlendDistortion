@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ViewVoltageTransfer.h"
+#include "WaveShaping.h"
 
 //==============================================================================
 /*
@@ -61,6 +63,10 @@ private:
     // ====== Audio Processor Pointer ======
     CleanBlendDistortionAudioProcessor& audioProcessor;
     // ====== ======
+    
+    // ====== Visuals ======
+    ViewVoltageTransfer mFuzzVoltageTransferObj;
+    ViewVoltageTransfer mDistortionVoltageTransferObj;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButtonsAndDials)
 };

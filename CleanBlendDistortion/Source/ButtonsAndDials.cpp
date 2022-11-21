@@ -12,7 +12,7 @@
 #include "ButtonsAndDials.h"
 
 //==============================================================================
-ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDistortionEffectToggle(), mFullWaveRectifierToggle(), mFuzzGainSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mDistortionEffectToggleLabel(), mFullWaveRectifierToggleLabel(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p)
+ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDistortionEffectToggle(), mFullWaveRectifierToggle(), mFuzzGainSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mDistortionEffectToggleLabel(), mFullWaveRectifierToggleLabel(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p), mFuzzVoltageTransferObj(WaveShaping::EffectType::fuzz), mDistortionVoltageTransferObj(WaveShaping::EffectType::distortion)
 {
     // Add toggle
     addToggleWithLabel(&mDistortionEffectToggle, &mDistortionEffectToggleLabel, "Distortion");
@@ -43,6 +43,9 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     
     mWetDryMixAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET/DRY", mWetDryMixRatioSlider);
     
+    // Graphics
+    addAndMakeVisible(mFuzzVoltageTransferObj);
+    addAndMakeVisible(mDistortionVoltageTransferObj);
 }
 
 ButtonsAndDials::~ButtonsAndDials()
@@ -61,16 +64,19 @@ void ButtonsAndDials::resized()
     // components that your component contains..
     const auto startX = 0.f;
     const auto startY = 0.2f;
-    const auto dialWidth = 0.15f;
+    const auto dialWidth = 1.0f/8.0f;
     const auto dialHeight = 0.75f;
     
-    mFuzzGainSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
-    mDistortionGainSlider.setBoundsRelative(startX+dialWidth, startY, dialWidth, dialHeight);
-    mDistortionEffectToggle.setBoundsRelative(startX+2.0f*dialWidth, startY, dialWidth, dialHeight/2.0f);
-    mFullWaveRectifierToggle.setBoundsRelative(startX+2.0f*dialWidth, 3.0f*startY, dialWidth, dialHeight/2.0f);
-    mDryFilterFreqSlider.setBoundsRelative(startX+3.0f*dialWidth, startY, dialWidth, dialHeight);
-    mDryFilterResSlider.setBoundsRelative(startX+4.0f*dialWidth, startY, dialWidth, dialHeight);
-    mWetDryMixRatioSlider.setBoundsRelative(startX+5.0f*dialWidth, startY, dialWidth, dialHeight);
+    int n = 0;
+    mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mFuzzGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mDistortionGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight/2.0f);
+    mFullWaveRectifierToggle.setBoundsRelative(startX+n*dialWidth, 3.0f*startY, dialWidth, dialHeight/2.0f);n++;
+    mDryFilterFreqSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mDryFilterResSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mWetDryMixRatioSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);
 }
 
 void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text, double centre_point)

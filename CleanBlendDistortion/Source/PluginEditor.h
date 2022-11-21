@@ -31,7 +31,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
-    ViewVoltageTransfer FuzzVoltageTransferObj;
+    //ViewVoltageTransfer FuzzVoltageTransferObj;
     //VisualiserWindow VisualiserWindowObj;
     // ====== ======
     
