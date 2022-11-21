@@ -22,6 +22,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
             {
                 case EffectType::fuzz:
                     channelData[sample] = fexp1(channelData[sample], gain);
+                    channelData[sample] = fexp1(channelData[sample], gain);
                     break;
                     
                 case EffectType::distortion:
@@ -41,7 +42,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
 // Fuzz
 float WaveShaping::fexp1(float sampleValue, float gain=1.0)
 {
-    return sgn(sampleValue)*((1.0f-exp(-abs(sampleValue)))/((1.0f-exp(-abs(gain)))));
+    return sgn(sampleValue)*((1.0f-exp(-abs(gain*sampleValue)))/((1.0f-exp(-abs(gain)))));
 }
 
 // Distortion
