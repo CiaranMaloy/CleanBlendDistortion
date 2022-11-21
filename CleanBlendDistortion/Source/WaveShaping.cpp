@@ -26,6 +26,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
                     
                 case EffectType::distortion:
                     channelData[sample] = asqrt_sqs(channelData[sample]);
+                    channelData[sample] = fexp1(channelData[sample], gain);
                     break;
                     
                 case EffectType::fullWaveRectifier:
@@ -97,7 +98,7 @@ juce::AudioBuffer<float> WaveShaping::voltageTransferFunction(EffectType type, i
     {
         case EffectType::distortion:
             process(WaveShaping::EffectType::distortion, mDisplayBuffer, NCHANNELS);
-            process(WaveShaping::EffectType::fuzz, mDisplayBuffer, NCHANNELS);
+            //process(WaveShaping::EffectType::fuzz, mDisplayBuffer, NCHANNELS);
             break;
         
         case EffectType::fuzz:
