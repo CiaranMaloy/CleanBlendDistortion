@@ -33,7 +33,19 @@ void ViewVoltageTransfer::paint (juce::Graphics& g)
     g.setColour(juce::Colours::white);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
     
-    // paint
+    // paint cross
+    juce::Path crossVerticalPath;
+    crossVerticalPath.startNewSubPath(innerBounds.getX()+1 + innerBounds.getWidth()/2, innerBounds.getY());
+    crossVerticalPath.lineTo(innerBounds.getX()+1 + innerBounds.getWidth()/2, innerBounds.getY() + innerBounds.getHeight());
+    g.setColour(juce::Colours::white);
+    g.strokePath(crossVerticalPath, juce::PathStrokeType(1.f));
+    
+    juce::Path crossHorisontalPath;
+    crossHorisontalPath.startNewSubPath(innerBounds.getX(), innerBounds.getY()+innerBounds.getHeight()/2);
+    crossHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + innerBounds.getHeight()/2);
+    g.setColour(juce::Colours::white);
+    g.strokePath(crossHorisontalPath, juce::PathStrokeType(1.f));
+    
 }
 
 void ViewVoltageTransfer::resized()
