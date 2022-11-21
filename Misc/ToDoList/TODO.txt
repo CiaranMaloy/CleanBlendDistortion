@@ -50,7 +50,7 @@ Focus on audio effect part
 
 20/11/2022: Draw a diagram of the waveshaper 
 
-0. create a  Voltage transfer function display object
-1. draw a square inside the box
-2. draw a transfer function inside the box
+//0. create a  Voltage transfer function display object
+//1. draw a square inside the box
+//2. draw a transfer function inside the box
 3. draw a cross using the path object ??

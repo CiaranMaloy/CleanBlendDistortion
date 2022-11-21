@@ -80,7 +80,6 @@ WaveShaping::WaveShaping()
 
 juce::AudioBuffer<float> WaveShaping::voltageTransferFunction(EffectType type, int N)
 {
-    DBG("Voltage Transfer Function");
     int CHANNEL = 0;
     int NCHANNELS = 1;
     mDisplayBuffer.setSize(NCHANNELS, N);
@@ -88,30 +87,24 @@ juce::AudioBuffer<float> WaveShaping::voltageTransferFunction(EffectType type, i
     // === writer -1 to 1 in the buffer
     for (int sample = 0; sample < mDisplayBuffer.getNumSamples(); sample++)
     {
-        DBG(sample);
         float input = (static_cast<float>(sample) - static_cast<float>(N)/2.0f)/(static_cast<float>(N)/2.0f);
-        DBG(input);
         mDisplayBuffer.setSample(CHANNEL, sample, input);
     }
     // ======
     // ====== Put the audio throught the effect
-    DBG("Distortion Effect");
     
     switch (type)
     {
         case EffectType::distortion:
-            DBG("1");
             process(WaveShaping::EffectType::distortion, mDisplayBuffer, NCHANNELS);
             process(WaveShaping::EffectType::fuzz, mDisplayBuffer, NCHANNELS);
             break;
         
         case EffectType::fuzz:
-            DBG("2");
             process(WaveShaping::EffectType::fuzz, mDisplayBuffer, NCHANNELS);
             break;
             
         case EffectType::fullWaveRectifier:
-            DBG("3");
             process(WaveShaping::EffectType::fullWaveRectifier, mDisplayBuffer, NCHANNELS);
             break;
     }

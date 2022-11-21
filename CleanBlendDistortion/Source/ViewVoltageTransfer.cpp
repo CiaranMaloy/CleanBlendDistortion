@@ -32,6 +32,8 @@ void ViewVoltageTransfer::paint (juce::Graphics& g)
     auto path_to_paint = generateVoltageTransferPath(innerBounds, WaveShaping::EffectType::distortion);
     g.setColour(juce::Colours::white);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
+    
+    // paint
 }
 
 void ViewVoltageTransfer::resized()
@@ -71,21 +73,12 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
     WaveShaping waveShapeViewer;
     juce::AudioBuffer<float> displayBuffer = waveShapeViewer.voltageTransferFunction(type, N);
     int CHANNEL = displayBuffer.getNumChannels() - 1;
-    DBG("display Buffer Set");
     
     const int width = Rect.getRight() - Rect.getX();
-    DBG(width);
     const float OFFSET = 0.5;
     const int DOWNSAMPLE = N/width;
     
-    DBG(DOWNSAMPLE);
-    DBG("Output Function");
-    auto* channelData = displayBuffer.getReadPointer(CHANNEL);
-    for (int sample = 0; sample < displayBuffer.getNumSamples(); sample++)
-    {
-        DBG(channelData[sample]);
-    }
-    
+    const float* channelData = displayBuffer.getReadPointer(CHANNEL);
     displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (-channelData[0] + OFFSET));
 
     // draw a random line
