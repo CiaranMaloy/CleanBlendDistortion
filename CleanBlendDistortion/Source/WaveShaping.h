@@ -16,6 +16,8 @@
 class WaveShaping
 {
 public:
+    WaveShaping();
+    
     enum EffectType
     {
         fuzz,
@@ -24,6 +26,8 @@ public:
     };
     
     static void process(EffectType type, juce::AudioBuffer<float>& buffer, int totalNumInputChannels, float gain=1.0f);
+    
+    juce::AudioBuffer<float> voltageTransferFunction(EffectType type, int N);
     
 private:
     // Fuzz
@@ -39,4 +43,7 @@ private:
     
     // Maths
     static float sgn(float x);
+    
+    // Transfer function output
+    juce::AudioBuffer<float> mDisplayBuffer;
 };
