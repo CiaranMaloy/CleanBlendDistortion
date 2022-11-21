@@ -20,7 +20,7 @@
 class ViewVoltageTransfer  : public juce::Component
 {
 public:
-    ViewVoltageTransfer();
+    ViewVoltageTransfer(WaveShaping::EffectType type);
     ~ViewVoltageTransfer() override;
 
     void paint (juce::Graphics&) override;
@@ -37,6 +37,9 @@ private:
     // == voltage transfer
     juce::Path generateVoltageTransferPath(juce::Rectangle<float> Rect);
     juce::Path generateVoltageTransferPath(juce::Rectangle<float> Rect, WaveShaping::EffectType type);
+    
+    // == Settings
+    WaveShaping::EffectType mInternalType;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ViewVoltageTransfer)
 };

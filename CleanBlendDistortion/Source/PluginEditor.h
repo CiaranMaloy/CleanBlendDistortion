@@ -13,6 +13,7 @@
 #include "ButtonsAndDials.h"
 #include "VisualiserWindow.h"
 #include "ViewVoltageTransfer.h"
+#include "WaveShaping.h"
 
 //==============================================================================
 /**
@@ -30,7 +31,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
-    ViewVoltageTransfer VoltageTransferObj;
+    ViewVoltageTransfer FuzzVoltageTransferObj;
     //VisualiserWindow VisualiserWindowObj;
     // ====== ======
     

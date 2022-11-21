@@ -12,8 +12,9 @@
 #include "ViewVoltageTransfer.h"
 
 //==============================================================================
-ViewVoltageTransfer::ViewVoltageTransfer()
+ViewVoltageTransfer::ViewVoltageTransfer(WaveShaping::EffectType type)
 {
+    mInternalType = type;
 }
 
 ViewVoltageTransfer::~ViewVoltageTransfer()
@@ -29,7 +30,7 @@ void ViewVoltageTransfer::paint (juce::Graphics& g)
     g.fillRect(innerBounds);
     
     //auto path_to_paint = generateVoltageTransferPath(innerBounds);
-    auto path_to_paint = generateVoltageTransferPath(innerBounds, WaveShaping::EffectType::distortion);
+    auto path_to_paint = generateVoltageTransferPath(innerBounds, mInternalType);
     g.setColour(juce::Colours::white);
     g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
     
@@ -45,7 +46,6 @@ void ViewVoltageTransfer::paint (juce::Graphics& g)
     crossHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + innerBounds.getHeight()/2);
     g.setColour(juce::Colours::white);
     g.strokePath(crossHorisontalPath, juce::PathStrokeType(1.f));
-    
 }
 
 void ViewVoltageTransfer::resized()
@@ -91,14 +91,18 @@ juce::Path ViewVoltageTransfer::generateVoltageTransferPath(juce::Rectangle<floa
     const int DOWNSAMPLE = N/width;
     
     const float* channelData = displayBuffer.getReadPointer(CHANNEL);
-    displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (-channelData[0] + OFFSET));
-
+    
+    
     // draw a random line
+    float scaling = 0.5;
+    float maxValue = displayBuffer.getMagnitude(CHANNEL, 0, displayBuffer.getNumSamples());
+    
+    displayPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (-scaling*channelData[0]/maxValue + OFFSET));
     for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
     {
         int x_s = x-Rect.getX()-1;
         //DBG(channelData[x*DOWNSAMPLE]);
-        displayPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x_s*DOWNSAMPLE] + OFFSET));
+        displayPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-scaling*channelData[x_s*DOWNSAMPLE]/maxValue + OFFSET));
     }
     
     return displayPath;

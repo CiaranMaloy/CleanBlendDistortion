@@ -11,14 +11,14 @@
 
 //==============================================================================
 CleanBlendDistortionAudioProcessorEditor::CleanBlendDistortionAudioProcessorEditor (CleanBlendDistortionAudioProcessor& p)
-    : AudioProcessorEditor (&p), ButtonsAndDialsObj(p), VoltageTransferObj(),/*VisualiserWindowObj(p),*/ audioProcessor (p)
+    : AudioProcessorEditor (&p), ButtonsAndDialsObj(p), FuzzVoltageTransferObj(WaveShaping::EffectType::fuzz),/*VisualiserWindowObj(p),*/ audioProcessor (p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     addAndMakeVisible(ButtonsAndDialsObj);
-    addAndMakeVisible(VoltageTransferObj);
+    addAndMakeVisible(FuzzVoltageTransferObj);
     //addAndMakeVisible(VisualiserWindowObj);
-    setSize (800, 200);
+    setSize (800, 300);
 }
 
 CleanBlendDistortionAudioProcessorEditor::~CleanBlendDistortionAudioProcessorEditor()
@@ -48,11 +48,11 @@ void CleanBlendDistortionAudioProcessorEditor::resized()
 //
 //    VisualiserWindowObj.setBoundsRelative(vis_x_pos_relative, vis_y_pos_relative, vis_x_width_relative, vis_y_height_relative);
     
-    const float volt_x_pos_relative = 0;
-    const float volt_y_pos_relative = 0;
-    const float volt_x_width_relative = 0.5;
-    const float volt_y_height_relative = 0.5;
+    const float volt_x_pos_relative = 10;
+    const float volt_y_pos_relative = 10;
+    const float volt_x_width_relative = 100;
+    const float volt_y_height_relative = 100;
 
-    VoltageTransferObj.setBoundsRelative(volt_x_pos_relative, volt_y_pos_relative, volt_x_width_relative, volt_y_height_relative);
+    FuzzVoltageTransferObj.setBounds(volt_x_pos_relative, volt_y_pos_relative, volt_x_width_relative, volt_y_height_relative);
 }
 
