@@ -31,8 +31,7 @@ public:
 private:
     // ====== Buttons and Dials ======
     ButtonsAndDials ButtonsAndDialsObj;
-    //ViewVoltageTransfer FuzzVoltageTransferObj;
-    //VisualiserWindow VisualiserWindowObj;
+    VisualiserWindow VisualiserWindowObj;
     // ====== ======
     
     CleanBlendDistortionAudioProcessor& audioProcessor;

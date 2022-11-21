@@ -210,7 +210,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         
         // Distortion
         WaveShaping::process(WaveShaping::EffectType::distortion, buffer, totalNumInputChannels);
-        //WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels);
     }
     // =============================================================
     
