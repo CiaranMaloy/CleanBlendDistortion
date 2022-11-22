@@ -34,6 +34,20 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
     
+    // draw two red lines at +/- 1
+    juce::Path negHorisontalPath;
+    negHorisontalPath.startNewSubPath(innerBounds.getX(), innerBounds.getY()+0.75*innerBounds.getHeight());
+    negHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + 0.75*innerBounds.getHeight());
+    g.setColour(juce::Colours::red);
+    g.strokePath(negHorisontalPath, juce::PathStrokeType(1.f));
+    
+    juce::Path posHorisontalPath;
+    posHorisontalPath.startNewSubPath(innerBounds.getX(), innerBounds.getY()+0.25*innerBounds.getHeight());
+    posHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + 0.25*innerBounds.getHeight());
+    g.setColour(juce::Colours::red);
+    g.strokePath(posHorisontalPath, juce::PathStrokeType(1.f));
+    
+    // draw audio paths
     auto output_path = generateAudioPath(innerBounds, 2);
     g.setColour(juce::Colours::white);
     g.strokePath(output_path, juce::PathStrokeType(1.f));
