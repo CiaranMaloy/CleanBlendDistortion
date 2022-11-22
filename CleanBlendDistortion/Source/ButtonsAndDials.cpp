@@ -19,11 +19,11 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     addToggleWithLabel(&mFullWaveRectifierToggle, &mFullWaveRectifierToggleLabel, "Full Wave Rect");
     
     // Add sliders and labels
-    addSliderWithLabel(&mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain");
-    addSliderWithLabel(&mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain");
-    addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", 500.0);
-    addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res");
-    addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry");
+    addSliderWithLabel(&mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain", WetDryChain::wet);
+    addSliderWithLabel(&mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain", WetDryChain::wet);
+    addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", WetDryChain::wet, 500.0f);
+    addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res", WetDryChain::wet);
+    addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry", WetDryChain::wet);
     
     // attach to Audio Processor Value Tree State
     // Buttons
@@ -79,12 +79,24 @@ void ButtonsAndDials::resized()
     mWetDryMixRatioSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);
 }
 
-void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text, double centre_point)
+void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text,  WetDryChain selection, double centre_point)
 {
     // Create Sliders
     sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::white);
+    
+    switch (selection)
+    {
+        case WetDryChain::wet:
+            sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::white);
+            break;
+            
+        case WetDryChain::dry:
+            sliderObj->setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::powderblue);
+            break;
+        default:
+            break;
+    }
     
     addAndMakeVisible(sliderObj);
     

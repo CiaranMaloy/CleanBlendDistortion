@@ -135,8 +135,6 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
     // ====== Circular Buffer ======
     const int numSeconds = 5;
     mCircBuffer.setConstants(numSeconds, getTotalNumInputChannels()*2, sampleRate, samplesPerBlock);
-    DBG("Channels");
-    DBG(mCircBuffer.getBuffer().getNumChannels());
     // ============
     
 }

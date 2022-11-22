@@ -34,13 +34,13 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
     
-    auto input_path = generateAudioPath(innerBounds, 0);
-    g.setColour(juce::Colours::powderblue);
-    g.strokePath(input_path, juce::PathStrokeType(1.f));
-    
     auto output_path = generateAudioPath(innerBounds, 2);
     g.setColour(juce::Colours::white);
     g.strokePath(output_path, juce::PathStrokeType(1.f));
+    
+    auto input_path = generateAudioPath(innerBounds, 0);
+    g.setColour(juce::Colours::powderblue);
+    g.strokePath(input_path, juce::PathStrokeType(1.f));
 }
 
 void VisualiserWindow::resized()
