@@ -57,7 +57,11 @@ Focus on audio effect part
 
 22/11/2022: Display input and output waveforms
 
+Circular Buffer:
 //0. give mCircBuffer 2x as many channels
 //1. iterate through channels 1-2 and 3-4 separately
 //2. pass over all channels 
 //3. get information from channels 1-2 and 3-4 separately
+
+Distortion: 
+Find an asymetrical distortion that crosses the x axis smoothly

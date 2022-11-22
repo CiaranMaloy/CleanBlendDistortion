@@ -107,7 +107,6 @@ juce::AudioBuffer<float> WaveShaping::voltageTransferFunction(EffectType type, i
     {
         case EffectType::distortion:
             process(WaveShaping::EffectType::distortion, mDisplayBuffer, NCHANNELS);
-            //process(WaveShaping::EffectType::fuzz, mDisplayBuffer, NCHANNELS);
             break;
         
         case EffectType::fuzz:
