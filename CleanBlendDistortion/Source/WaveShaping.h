@@ -39,6 +39,7 @@ private:
     
     // Asymetrical
     static float asqrt_sqs(float sampleValue);
+    static float asqrt_fexp1(float sampleValue, float gain);
     static float fwr(float sampleValue);
     
     // Maths
