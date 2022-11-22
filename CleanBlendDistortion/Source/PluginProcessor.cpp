@@ -134,7 +134,9 @@ void CleanBlendDistortionAudioProcessor::prepareToPlay (double sampleRate, int s
     
     // ====== Circular Buffer ======
     const int numSeconds = 5;
-    mCircBuffer.setConstants(numSeconds, getTotalNumInputChannels(), sampleRate, samplesPerBlock);
+    mCircBuffer.setConstants(numSeconds, getTotalNumInputChannels()*2, sampleRate, samplesPerBlock);
+    DBG("Channels");
+    DBG(mCircBuffer.getBuffer().getNumChannels());
     // ============
     
 }
@@ -187,6 +189,16 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    // ================ Circular Buffer ============================
+    DBG("Clean");
+    for (int channel = 0; channel < totalNumInputChannels; channel++)
+    {
+        DBG(channel);
+        const float* bufferData = buffer.getReadPointer(channel);
+        mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
+        DBG("Done");
+    }
+    
     // ================ EFFECTS =======================================================================
     // === Set Values
     updateEffectParameters();
@@ -236,10 +248,13 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ Circular Buffer ============================
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    DBG("Wet");
+    for (int channel = 2; channel < totalNumInputChannels*2; channel++)
     {
-        const float* bufferData = buffer.getReadPointer(channel);
+        DBG(channel);
+        const float* bufferData = buffer.getReadPointer(channel-2);
         mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
+        DBG("Done");
     }
     mCircBuffer.updateWritePosition(buffer.getNumSamples());
     // =============================================================

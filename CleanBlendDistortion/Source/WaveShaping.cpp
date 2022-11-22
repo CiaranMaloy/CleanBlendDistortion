@@ -13,6 +13,8 @@
 // For use in audio buffer
 void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int totalNumInputChannels, float gain)
 {
+// TODO: Integrate a gain ramp into here potentially
+
     for (int channel = 0; channel < totalNumInputChannels; channel++)
     {
         float* channelData = buffer.getWritePointer (channel);
