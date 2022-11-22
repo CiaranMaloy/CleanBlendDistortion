@@ -78,11 +78,10 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect, cons
     juce::Path randomPath;
     juce::AudioBuffer<float> displayBuffer = audioProcessor.getBufferForDisplay();
     
-    //DBG(displayBuffer.getNumSamples());
-    //DBG(Rect.getWidth());
         
     const float OFFSET = 0.5;
     const int DOWNSAMPLE = 10;
+    float scalingFactor = 2;
     auto* channelData = displayBuffer.getWritePointer(CHANNEL);
     
     randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (-channelData[0] + OFFSET));
@@ -91,7 +90,14 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect, cons
     for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
     {
         //DBG(channelData[x*DOWNSAMPLE]);
-        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x*DOWNSAMPLE] + OFFSET));
+        if (scalingFactor > 0.0f)
+        {
+            randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x*DOWNSAMPLE]/scalingFactor + OFFSET));
+        }
+        else
+        {
+            randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x*DOWNSAMPLE] + OFFSET));
+        }
     }
     
     return randomPath;

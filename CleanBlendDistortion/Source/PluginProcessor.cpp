@@ -190,13 +190,10 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
         buffer.clear (i, 0, buffer.getNumSamples());
     
     // ================ Circular Buffer ============================
-    DBG("Clean");
     for (int channel = 0; channel < totalNumInputChannels; channel++)
     {
-        DBG(channel);
         const float* bufferData = buffer.getReadPointer(channel);
         mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
-        DBG("Done");
     }
     
     // ================ EFFECTS =======================================================================
@@ -248,13 +245,10 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================ Circular Buffer ============================
-    DBG("Wet");
     for (int channel = 2; channel < totalNumInputChannels*2; channel++)
     {
-        DBG(channel);
         const float* bufferData = buffer.getReadPointer(channel-2);
         mCircBuffer.fillCircularBuffer(channel, buffer.getNumSamples(), bufferData);
-        DBG("Done");
     }
     mCircBuffer.updateWritePosition(buffer.getNumSamples());
     // =============================================================
