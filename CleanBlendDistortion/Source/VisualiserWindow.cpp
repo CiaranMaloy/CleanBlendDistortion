@@ -34,10 +34,13 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
     
-    auto path_to_paint = generateAudioPath(innerBounds);
-    g.setColour(juce::Colours::white);
-    g.strokePath(path_to_paint, juce::PathStrokeType(1.f));
+    auto input_path = generateAudioPath(innerBounds, 0);
+    g.setColour(juce::Colours::powderblue);
+    g.strokePath(input_path, juce::PathStrokeType(1.f));
     
+    auto output_path = generateAudioPath(innerBounds, 2);
+    g.setColour(juce::Colours::white);
+    g.strokePath(output_path, juce::PathStrokeType(1.f));
 }
 
 void VisualiserWindow::resized()
@@ -70,7 +73,7 @@ juce::Path VisualiserWindow::generateRandomPath(juce::Rectangle<float> Rect)
     return randomPath;
 }
 
-juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
+juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect, const int CHANNEL)
 {
     juce::Path randomPath;
     juce::AudioBuffer<float> displayBuffer = audioProcessor.getBufferForDisplay();
@@ -78,7 +81,6 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect)
     //DBG(displayBuffer.getNumSamples());
     //DBG(Rect.getWidth());
         
-    const int CHANNEL = 1;
     const float OFFSET = 0.5;
     const int DOWNSAMPLE = 10;
     auto* channelData = displayBuffer.getWritePointer(CHANNEL);
