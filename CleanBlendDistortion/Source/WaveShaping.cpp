@@ -29,7 +29,7 @@ void WaveShaping::process(EffectType type, juce::AudioBuffer<float> &buffer, int
                     
                 case EffectType::distortion:
                     channelData[sample] = asqrt_fexp1(channelData[sample], gain);
-                    channelData[sample] = asqrt_sqs(channelData[sample]);
+                    channelData[sample] = fexp1_hardclip(channelData[sample], gain);
                     break;
                     
                 case EffectType::fullWaveRectifier:
@@ -59,6 +59,21 @@ float WaveShaping::sqs(float sampleValue)
     return pow(sampleValue, 2.0f)*sgn(sampleValue);
 }
 
+float WaveShaping::hardclip(float sampleValue)
+{
+    if (sampleValue > 1.0f)
+    {
+        sampleValue = 1.0f;
+    }
+    else if (sampleValue < -1.0f)
+    {
+        sampleValue = -1.0f;
+    }
+    else {}
+    
+    return sampleValue;
+}
+
 // Asymetrical
 float WaveShaping::asqrt_sqs(float sampleValue)
 {
@@ -67,12 +82,19 @@ float WaveShaping::asqrt_sqs(float sampleValue)
 
 float WaveShaping::asqrt_fexp1(float sampleValue, float gain)
 {
-    return (sampleValue > 0) ? asqrt(sampleValue) : fexp1(sampleValue, gain);
+    float async_gain = 1.0;
+    return (sampleValue > 0) ? asqrt(sampleValue) : fexp1(async_gain*sampleValue, async_gain*gain);
 }
 
 float WaveShaping::fwr(float sampleValue)
 {
     return (sampleValue > 0) ? sampleValue : -sampleValue;
+}
+
+float WaveShaping::fexp1_hardclip(float sampleValue, float gain)
+{
+    float async_gain = 1.5;
+    return (sampleValue > 0) ? fexp1(sampleValue, gain) : hardclip(async_gain*sampleValue);
 }
 
 // Maths

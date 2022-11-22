@@ -36,10 +36,12 @@ private:
     // Distortion
     static float asqrt(float sampleValue);
     static float sqs(float sampleValue);
+    static float hardclip(float sampleValue);
     
     // Asymetrical
     static float asqrt_sqs(float sampleValue);
     static float asqrt_fexp1(float sampleValue, float gain);
+    static float fexp1_hardclip(float sampleValue, float gain);
     static float fwr(float sampleValue);
     
     // Maths
