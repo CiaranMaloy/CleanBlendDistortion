@@ -19,7 +19,7 @@ CleanBlendDistortionAudioProcessor::CleanBlendDistortionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), effectParams(), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(static_cast<double>(getSampleRate()), 20000.0f, 1.0f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
+                       ), effectParams(), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(44100.0f, 20000.0f, 1.0f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
 #endif
 {
 }
