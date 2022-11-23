@@ -2,7 +2,8 @@
 
 <JUCERPROJECT id="yJXrYb" name="CleanBlendDistortion" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1">
+              jucerFormatVersion="1" version="1.0.0" companyName="MaloyAudio"
+              pluginVST3Category="Distortion" pluginAAXCategory="0" pluginVSTCategory="kPlugCategEffect">
   <MAINGROUP id="QPnidR" name="CleanBlendDistortion">
     <GROUP id="{4DDDE968-30DD-564A-D009-EA55B3D8796B}" name="Source">
       <GROUP id="{9C979A95-D39C-74E2-2131-DA4AA7FEF602}" name="Graphics">

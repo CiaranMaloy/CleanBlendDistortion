@@ -19,7 +19,7 @@ CleanBlendDistortionAudioProcessor::CleanBlendDistortionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), effectParams(), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 20000.0f, 1.0f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
+                       ), effectParams(), mLowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(static_cast<double>(getSampleRate()), 20000.0f, 1.0f)), apvts(*this, nullptr, "PROCESSOR", createAPVTSParameterLayout()), mCircBuffer()
 #endif
 {
 }
@@ -39,16 +39,19 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
+    // Version Info
+    const int versionHint = 1;
+    
     // Bools
-    params.push_back(std::make_unique<juce::AudioParameterBool>("DISTORTION TOGGLE", "Distortion Toggle", true));
-    params.push_back(std::make_unique<juce::AudioParameterBool>("FULL WAVE RECTIFIER TOGGLE", "Full Wave Rectifier Toggle", true));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"DISTORTION TOGGLE", versionHint}, "Distortion Toggle", true));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"FULL WAVE RECTIFIER TOGGLE", versionHint}, "Full Wave Rectifier Toggle", true));
     
     // Floats
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("FUZZ GAIN", "Fuzz Gain", 0.0f, 4.0f, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DISTORTION GAIN", "Distortion Gain", 0.0f, 4.0f, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER FREQ", "Dry Filter Freq", juce::NormalisableRange<float>(LPF_MIN, LPF_MAX, 1.f, LPF_SKEW_FACTOR), LPF_INITIAL_VALUE));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DRY FILTER RES", "Dry Filter Res", 0.0f, 2.0f, 0.707f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("WET/DRY", "Wet/Dry", 0.0f, 1.0f, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"FUZZ GAIN", versionHint}, "Fuzz Gain", 0.0f, 4.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DISTORTION GAIN", versionHint}, "Distortion Gain", 0.0f, 4.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DRY FILTER FREQ", versionHint}, "Dry Filter Freq", juce::NormalisableRange<float>(LPF_MIN, LPF_MAX, 1.f, LPF_SKEW_FACTOR), LPF_INITIAL_VALUE));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DRY FILTER RES", versionHint}, "Dry Filter Res", 0.0f, 2.0f, 0.707f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"WET/DRY", versionHint}, "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
     return {params.begin(), params.end()};
 }

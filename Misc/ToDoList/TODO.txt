@@ -101,7 +101,7 @@ std::array<NumericType, 6> ArrayCoefficients<NumericType>::makeLowPass (double s
                c1 * (1 - invQ * n + nSquared) } };
 }
 
-JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441 (Fixed)
 void AudioProcessor::validateParameter (AudioProcessorParameter* param)
 {
     checkForDuplicateParamID (param);
@@ -118,5 +118,9 @@ void AudioProcessor::validateParameter (AudioProcessorParameter* param)
 }
 
 While Runnig:
---- None ---
-
+JUCE Assertion failure in juce_AudioSampleBuffer.h:940
+JUCE Assertion failure in juce_AudioSampleBuffer.h:940
+JUCE Assertion failure in juce_AudioSampleBuffer.h:940
+JUCE Assertion failure in juce_AudioSampleBuffer.h:940
+940:: jassert (sourceStartSample >= 0 && numSamples >= 0 && sourceStartSample + numSamples <= source.size);
+I think this is from asking for asking for gui stuff before anything is playing
