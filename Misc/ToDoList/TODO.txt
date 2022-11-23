@@ -124,3 +124,7 @@ JUCE Assertion failure in juce_AudioSampleBuffer.h:940
 JUCE Assertion failure in juce_AudioSampleBuffer.h:940
 940:: jassert (sourceStartSample >= 0 && numSamples >= 0 && sourceStartSample + numSamples <= source.size);
 I think this is from asking for asking for gui stuff before anything is playing
+
+JUCE Assertion failure in juce_AudioSampleBuffer.h:938
+jassert (destStartSample >= 0 && destStartSample + numSamples <= size);
+Problems with copyFrom

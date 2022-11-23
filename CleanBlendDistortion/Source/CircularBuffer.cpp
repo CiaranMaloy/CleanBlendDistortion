@@ -36,9 +36,13 @@ void CircularBuffer::fillCircularBuffer(int channel, const int bufferLength, con
     }
     else
     {
+        // TODO: There is a problem here 
         const int bufferRemaining = circBufferLength - mWritePosition;
 
-        mCircBuffer.copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
+        if (bufferRemaining > 0)
+        {
+            mCircBuffer.copyFromWithRamp(channel, mWritePosition, bufferData, bufferRemaining, 1.0, 1.0);
+        }
 
         // now we've come to the end, we need to put the rest of the data back at the start of the buffer
         mCircBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength-bufferRemaining, 1.0, 1.0);
@@ -59,6 +63,7 @@ juce::AudioBuffer<float> CircularBuffer::getBufferForDisplay()
     
     juce::AudioBuffer<float> bufferToReturn(mNumInputChannels, N);
     
+    jassert(mWritePosition-1 <= mCircBuffer.getNumSamples());
     for (int channel = 0; channel < mNumInputChannels; ++channel)
     {
         if (mWritePosition-N-1 > 0)
