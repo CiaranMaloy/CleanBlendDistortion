@@ -64,4 +64,59 @@ Circular Buffer:
 //3. get information from channels 1-2 and 3-4 separately
 
 Distortion: 
-Find an asymetrical distortion that crosses the x axis smoothly
+// Find an asymetrical distortion that crosses the x axis smoothly (Done)
+
+23/11/2022:
+Bugs and Errors:
+
+Upon Initialising: 
+JUCE Assertion failure in juce_IIRFilter.cpp:81
+JUCE Assertion failure in juce_IIRFilter.cpp:82
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+
+JUCE Assertion failure in juce_IIRFilter.cpp:81
+JUCE Assertion failure in juce_IIRFilter.cpp:82
+template <typename NumericType>
+std::array<NumericType, 6> ArrayCoefficients<NumericType>::makeLowPass (double sampleRate,
+                                                                        NumericType frequency,
+                                                                        NumericType Q)
+{
+81::    jassert (sampleRate > 0.0);
+82::    jassert (frequency > 0 && frequency <= static_cast<float> (sampleRate * 0.5));
+    jassert (Q > 0.0);
+
+    auto n = 1 / std::tan (MathConstants<NumericType>::pi * frequency / static_cast<NumericType> (sampleRate));
+    auto nSquared = n * n;
+    auto invQ = 1 / Q;
+    auto c1 = 1 / (1 + invQ * n + nSquared);
+
+    return { { c1, c1 * 2, c1,
+               1, c1 * 2 * (1 - nSquared),
+               c1 * (1 - invQ * n + nSquared) } };
+}
+
+JUCE Assertion failure in juce_AudioProcessor.cpp:441
+void AudioProcessor::validateParameter (AudioProcessorParameter* param)
+{
+    checkForDuplicateParamID (param);
+    checkForDuplicateTrimmedParamID (param);
+
+    /*  If you're building this plugin as an AudioUnit, and you intend to use the plugin in
+        Logic Pro or GarageBand, it's a good idea to set version hints on all of your parameters
+        so that you can add parameters safely in future versions of the plugin.
+        See the documentation for AudioProcessorParameter(int) for more information.
+    */
+   #if JucePlugin_Build_AU
+441::    jassert (wrapperType == wrapperType_Undefined || param->getVersionHint() != 0);
+   #endif
+}
+
+While Runnig:
+--- None ---
+
