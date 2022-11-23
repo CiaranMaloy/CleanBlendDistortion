@@ -14,7 +14,7 @@
 //==============================================================================
 VisualiserWindow::VisualiserWindow(CleanBlendDistortionAudioProcessor& p) : outerBounds(), innerBounds(), audioProcessor(p)
 {
-    startTimer(20);
+    startTimer(40);
 }
 
 void VisualiserWindow::timerCallback()
@@ -33,19 +33,6 @@ void VisualiserWindow::paint (juce::Graphics& g)
     g.fillRect(outerBounds);
     g.setColour(juce::Colours::black);
     g.fillRect(innerBounds);
-    
-    // draw two red lines at +/- 1
-//    juce::Path negHorisontalPath;
-//    negHorisontalPath.startNewSubPath(innerBounds.getX(), innerBounds.getY()+0.75*innerBounds.getHeight());
-//    negHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + 0.75*innerBounds.getHeight());
-//    g.setColour(juce::Colours::red);
-//    g.strokePath(negHorisontalPath, juce::PathStrokeType(1.f));
-//
-//    juce::Path posHorisontalPath;
-//    posHorisontalPath.startNewSubPath(innerBounds.getX(), innerBounds.getY()+0.25*innerBounds.getHeight());
-//    posHorisontalPath.lineTo(innerBounds.getX() + innerBounds.getWidth(), innerBounds.getY() + 0.25*innerBounds.getHeight());
-//    g.setColour(juce::Colours::red);
-//    g.strokePath(posHorisontalPath, juce::PathStrokeType(1.f));
     
     // draw audio paths
     auto output_path = generateAudioPath(innerBounds, 2);
@@ -98,20 +85,31 @@ juce::Path VisualiserWindow::generateAudioPath(juce::Rectangle<float> Rect, cons
     float scalingFactor = 2;
     auto* channelData = displayBuffer.getWritePointer(CHANNEL);
     
-    randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (-channelData[0] + OFFSET));
+    float data = -channelData[0];
+    if (std::isnan(data)) // check for NaN
+    {
+        data = 0;
+    }
+    else if (data != 0.0f)
+    {
+        data = data/scalingFactor;
+    }
+    
+    randomPath.startNewSubPath(Rect.getX(), Rect.getY() + Rect.getHeight() * (data + OFFSET));
 
     // draw a random line
     for (int x = Rect.getX()+1; x < Rect.getRight()+1; x += 1)
     {
-        //DBG(channelData[x*DOWNSAMPLE]);
-        if (scalingFactor > 0.0f)
+        float data = -channelData[x*DOWNSAMPLE];
+        if (std::isnan(data)) // check for NaN
         {
-            randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x*DOWNSAMPLE]/scalingFactor + OFFSET));
+            data = 0;
         }
-        else
+        else if (data != 0.0f)
         {
-            randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (-channelData[x*DOWNSAMPLE] + OFFSET));
+            data = data/scalingFactor;
         }
+        randomPath.lineTo(x, Rect.getY() + Rect.getHeight() * (data + OFFSET));
     }
     
     return randomPath;
