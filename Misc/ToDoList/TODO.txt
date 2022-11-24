@@ -130,5 +130,10 @@ jassert (destStartSample >= 0 && destStartSample + numSamples <= size);
 Problems with copyFrom
 
 GUI: 
-If gain is 0 then there is a NaN passed to the GUI
-Fixed by making the Visualiser window see NaN values as 0's, since it's job is only to render the waveform. 
+// If gain is 0 then there is a NaN passed to the GUI
+// Fixed by making the Visualiser window see NaN values as 0's, since it's job is only to render the waveform. 
+
+Effect:
+23/11/2022:
+
+Use Decibels to describe gain 0 = 1x, 3dB = 2x, to -10dB etc 
