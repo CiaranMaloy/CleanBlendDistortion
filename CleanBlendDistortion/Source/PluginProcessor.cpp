@@ -270,11 +270,6 @@ void CleanBlendDistortionAudioProcessor::updateEffectParameters()
     effectParams.mFuzzGainArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("FUZZ GAIN")->load());
     effectParams.mDistortionGainArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("DISTORTION GAIN")->load());
     effectParams.mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
-    
-    DBG(effectParams.mFuzzGainArr[1]);
-    DBG(effectParams.mDistortionGainArr[1]);
-    
-    
 }
 
 // return data from circular buffer
