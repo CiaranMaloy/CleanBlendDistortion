@@ -6,3 +6,6 @@ These effects are made using information from [Designing Audio Effect Plugins in
 
 ## Layout 
 ![](Misc/Layout/Images/Screenshot_2022-11-25.png)
+
+## Signal Chain
+![](Misc/FlowDiagram/SignalChain/Signal_Chain_002.drawio)
