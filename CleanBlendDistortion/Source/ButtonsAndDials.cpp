@@ -93,7 +93,7 @@ void ButtonsAndDials::addSliderWithLabel(juce::Slider::SliderStyle style, juce::
 {
     // Create Sliders
     sliderObj->setSliderStyle(style);
-    sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
+    sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
     
     switch (selection)
     {
