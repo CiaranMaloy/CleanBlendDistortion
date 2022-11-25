@@ -136,4 +136,4 @@ GUI:
 Effect:
 23/11/2022:
 
-Use Decibels to describe gain 0 = 1x, 3dB = 2x, to -10dB etc 
+// Use Decibels to describe gain 0 = 1x, 3dB = 2x, to -10dB etc 
