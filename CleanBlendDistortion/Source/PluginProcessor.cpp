@@ -48,9 +48,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     
     // Floats
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"FUZZ GAIN", versionHint}, "Fuzz Gain", -20.0f, 20.0f, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"FUZZ VOLUME", versionHint}, "Fuzz Volume", -3.0f, 3.0f, 0.0f));
+    
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DISTORTION GAIN", versionHint}, "Distortion Gain", -20.0f, 20.0f, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DISTORTION VOLUME", versionHint}, "Distortion Volume", -3.0f, 3.0f, 0.0f));
+    
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DRY FILTER FREQ", versionHint}, "Dry Filter Freq", juce::NormalisableRange<float>(LPF_MIN, LPF_MAX, 1.f, LPF_SKEW_FACTOR), LPF_INITIAL_VALUE));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"DRY FILTER RES", versionHint}, "Dry Filter Res", 0.0f, 2.0f, 0.707f));
+    
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"WET/DRY", versionHint}, "Wet/Dry", 0.0f, 1.0f, 0.5f));
     
     return {params.begin(), params.end()};
@@ -210,16 +215,20 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     //buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzGainArr[0], effectParams.mFuzzGainArr[1]);
     // Fuzz
     WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, effectParams.mFuzzGainArr[1]);
+    
+    // Output volume
+    // Input
+    buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzVolumeArr[0], effectParams.mFuzzVolumeArr[1]);
     // =============================================================
     
     // ================= DISTORTION ================================
     if (effectParams.mDistortionEffectBool)
     {
-        // Input Gain
-        //buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mDistortionGainArr[0], effectParams.mDistortionGainArr[1]);
-        
         // Distortion
         WaveShaping::process(WaveShaping::EffectType::distortion, buffer, totalNumInputChannels, effectParams.mDistortionGainArr[1]);
+        
+        // Output Volume
+        buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mDistortionVolumeArr[0], effectParams.mDistortionVolumeArr[1]);
     }
     // =============================================================
     
@@ -260,7 +269,9 @@ void CleanBlendDistortionAudioProcessor::updateEffectParameters()
 {
     // Update old parameters (will crash if not pre-declaired)
     effectParams.mFuzzGainArr[0] = effectParams.mFuzzGainArr[1];
+    effectParams.mFuzzVolumeArr[0] = effectParams.mFuzzVolumeArr[1];
     effectParams.mDistortionGainArr[0] = effectParams.mDistortionGainArr[1];
+    effectParams.mDistortionVolumeArr[0] = effectParams.mDistortionVolumeArr[1];
     effectParams.mMixArr[0] = effectParams.mMixArr[1];
     
     // Update new parameters
@@ -268,7 +279,9 @@ void CleanBlendDistortionAudioProcessor::updateEffectParameters()
     effectParams.mDistortionEffectBool = apvts.getRawParameterValue("DISTORTION TOGGLE")->load() > 0.5;
     effectParams.mFullWaveRectifierBool = apvts.getRawParameterValue("FULL WAVE RECTIFIER TOGGLE")->load() > 0.5;
     effectParams.mFuzzGainArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("FUZZ GAIN")->load());
+    effectParams.mFuzzVolumeArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("FUZZ VOLUME")->load());
     effectParams.mDistortionGainArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("DISTORTION GAIN")->load());
+    effectParams.mDistortionVolumeArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("DISTORTION VOLUME")->load());
     effectParams.mMixArr[1] = apvts.getRawParameterValue("WET/DRY")->load();
 }
 

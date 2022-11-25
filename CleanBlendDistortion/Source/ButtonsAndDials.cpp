@@ -12,18 +12,24 @@
 #include "ButtonsAndDials.h"
 
 //==============================================================================
-ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDistortionEffectToggle(), mFullWaveRectifierToggle(), mFuzzGainSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mDistortionEffectToggleLabel(), mFullWaveRectifierToggleLabel(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p), mFuzzVoltageTransferObj(WaveShaping::EffectType::fuzz), mDistortionVoltageTransferObj(WaveShaping::EffectType::distortion)
+ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDistortionEffectToggle(), mFullWaveRectifierToggle(), mFuzzGainSlider(), mFuzzVolumeSlider(), mDistortionGainSlider(), mDistortionVolumeSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mDistortionEffectToggleLabel(), mFullWaveRectifierToggleLabel(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p), mFuzzVoltageTransferObj(WaveShaping::EffectType::fuzz), mDistortionVoltageTransferObj(WaveShaping::EffectType::distortion)
 {
     // Add toggle
     addToggleWithLabel(&mDistortionEffectToggle, &mDistortionEffectToggleLabel, "Distortion");
     addToggleWithLabel(&mFullWaveRectifierToggle, &mFullWaveRectifierToggleLabel, "Full Wave Rect");
     
     // Add sliders and labels
-    addSliderWithLabel(&mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain", WetDryChain::wet);
-    addSliderWithLabel(&mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain", WetDryChain::wet);
-    addSliderWithLabel(&mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", WetDryChain::wet, 500.0f);
-    addSliderWithLabel(&mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res", WetDryChain::wet);
-    addSliderWithLabel(&mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry", WetDryChain::wet);
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain", WetDryChain::wet);
+    addSliderWithLabel(juce::Slider::SliderStyle::LinearVertical, &mFuzzVolumeSlider, &mFuzzVolumeLabel, "Trim", WetDryChain::wet);
+    
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain", WetDryChain::wet);
+    addSliderWithLabel(juce::Slider::SliderStyle::LinearVertical, &mDistortionVolumeSlider, &mDistortionVolumeLabel, "Trim", WetDryChain::wet);
+    
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", WetDryChain::wet, 500.0f);
+    
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDryFilterResSlider, &mDryFilterResLabel, "Dry Filter Res", WetDryChain::wet);
+    
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mWetDryMixRatioSlider, &mWetDryMixRatioLabel, "Wet/Dry", WetDryChain::wet);
     
     // attach to Audio Processor Value Tree State
     // Buttons
@@ -34,8 +40,10 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     
     // Sliders
     mFuzzGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "FUZZ GAIN", mFuzzGainSlider);
+    mFuzzVolumeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "FUZZ VOLUME", mFuzzVolumeSlider);
     
     mDistortionGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DISTORTION GAIN", mDistortionGainSlider);
+    mDistortionVolumeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DISTORTION VOLUME", mDistortionVolumeSlider);
     
     mDryFilterFreqAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DRY FILTER FREQ", mDryFilterFreqSlider);
  
@@ -64,25 +72,27 @@ void ButtonsAndDials::resized()
     // components that your component contains..
     const auto startX = 0.f;
     const auto startY = 0.2f;
-    const auto dialWidth = 1.0f/8.0f;
+    const auto dialWidth = 1.0f/9.0f;
     const auto dialHeight = 0.75f;
     
-    int n = 0;
+    float n = 0;
     mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mFuzzGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mFuzzVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
     mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mDistortionGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
-    mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight/2.0f);
+    mDistortionVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
+    mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight/2.0f);n+=0.0;
     mFullWaveRectifierToggle.setBoundsRelative(startX+n*dialWidth, 3.0f*startY, dialWidth, dialHeight/2.0f);n++;
     mDryFilterFreqSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mDryFilterResSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mWetDryMixRatioSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);
 }
 
-void ButtonsAndDials::addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text,  WetDryChain selection, double centre_point)
+void ButtonsAndDials::addSliderWithLabel(juce::Slider::SliderStyle style, juce::Slider* sliderObj, juce::Label* labelObj, std::string label_text,  WetDryChain selection, double centre_point)
 {
     // Create Sliders
-    sliderObj->setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    sliderObj->setSliderStyle(style);
     sliderObj->setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     
     switch (selection)

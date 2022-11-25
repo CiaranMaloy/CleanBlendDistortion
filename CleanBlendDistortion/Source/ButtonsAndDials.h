@@ -39,11 +39,11 @@ private:
     
     // ====== Sliders and Labels ======
     juce::ToggleButton mDistortionEffectToggle, mFullWaveRectifierToggle;
-    juce::Slider mFuzzGainSlider, mDistortionGainSlider, mDryFilterFreqSlider, mDryFilterResSlider, mWetDryMixRatioSlider;
-    juce::Label mDistortionEffectToggleLabel, mFullWaveRectifierToggleLabel, mFuzzGainLabel, mDistortionGainLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
+    juce::Slider mFuzzGainSlider, mFuzzVolumeSlider, mDistortionGainSlider, mDistortionVolumeSlider, mDryFilterFreqSlider, mDryFilterResSlider, mWetDryMixRatioSlider;
+    juce::Label mDistortionEffectToggleLabel, mFullWaveRectifierToggleLabel, mFuzzGainLabel, mFuzzVolumeLabel, mDistortionGainLabel, mDistortionVolumeLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
     
     
-    void addSliderWithLabel(juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, WetDryChain selection, double centre_point=0);
+    void addSliderWithLabel(juce::Slider::SliderStyle style, juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, WetDryChain selection, double centre_point=0);
     void addToggleWithLabel(juce::ToggleButton* toggleObj, juce::Label* labelObj, std::string label_text, double centre_point=0);
     // ====== ======
     
@@ -54,7 +54,9 @@ private:
     
     // Sliders
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mFuzzGainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mFuzzVolumeAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDistortionGainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDistortionVolumeAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetDryMixAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDryFilterFreqAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDryFilterResAttachment;

@@ -79,8 +79,10 @@ private:
         bool mDistortionEffectBool, mFullWaveRectifierBool;
         
         // ====== GAIN ======
-        std::array<float, 2> mFuzzGainArr = {1.2, 1.2};
-        std::array<float, 2> mDistortionGainArr = {1.2, 1.2};
+        std::array<float, 2> mFuzzGainArr = {1.0, 1.0};
+        std::array<float, 2> mFuzzVolumeArr = {1.0, 1.0};
+        std::array<float, 2> mDistortionGainArr = {1.0, 1.0};
+        std::array<float, 2> mDistortionVolumeArr = {1.0, 1.0};
         std::array<float, 2> mMixArr = {0.5, 0.5};
         
         float mGainStageOne {1.2};
