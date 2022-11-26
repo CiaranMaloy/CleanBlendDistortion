@@ -1,6 +1,7 @@
 *.bkp
 *.dtmp
 
+**/Distrobution
 **/Builds
 **/JuceLibraryCode
 
