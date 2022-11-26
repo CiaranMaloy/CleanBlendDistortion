@@ -204,7 +204,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     }
     
     // ================ EFFECTS =======================================================================
-    // === Set Values
     updateEffectParameters();
     
     // ================ INITIALISE DRY BUFFER ======================
