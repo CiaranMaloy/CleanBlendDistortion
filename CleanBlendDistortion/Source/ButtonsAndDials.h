@@ -38,9 +38,9 @@ private:
     };
     
     // ====== Sliders and Labels ======
-    juce::ToggleButton mDistortionEffectToggle, mFullWaveRectifierToggle;
+    juce::ToggleButton mFuzzEffectToggle, mDistortionEffectToggle, mFullWaveRectifierToggle;
     juce::Slider mFuzzGainSlider, mFuzzVolumeSlider, mDistortionGainSlider, mDistortionVolumeSlider, mDryFilterFreqSlider, mDryFilterResSlider, mWetDryMixRatioSlider;
-    juce::Label mDistortionEffectToggleLabel, mFullWaveRectifierToggleLabel, mFuzzGainLabel, mFuzzVolumeLabel, mDistortionGainLabel, mDistortionVolumeLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
+    juce::Label mFuzzEffectToggleLabel, mDistortionEffectToggleLabel, mFullWaveRectifierToggleLabel, mFuzzGainLabel, mFuzzVolumeLabel, mDistortionGainLabel, mDistortionVolumeLabel, mDryFilterFreqLabel, mDryFilterResLabel, mWetDryMixRatioLabel;
     
     
     void addSliderWithLabel(juce::Slider::SliderStyle style, juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, WetDryChain selection, double centre_point=0);
@@ -49,6 +49,7 @@ private:
     
     // ====== audio processor value tree state attachments =====
     // Buttons
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mFuzzEffectToggleAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mDistortionEffectToggleAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mFullWaveRectifierToggleAttachment;
     
@@ -71,6 +72,8 @@ private:
     juce::Label mFuzzVoltageTransferObjLabel;
     ViewVoltageTransfer mDistortionVoltageTransferObj;
     juce::Label mDistortionVoltageTransferObjLabel;
+    ViewVoltageTransfer mFWRVoltageTransferObj;
+    juce::Label mFWRVoltageTransferObjLabel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButtonsAndDials)
 };

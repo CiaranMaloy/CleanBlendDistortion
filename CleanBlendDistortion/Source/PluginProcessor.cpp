@@ -43,6 +43,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout CleanBlendDistortionAudioPro
     const int versionHint = 1;
     
     // Bools
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"FUZZ TOGGLE", versionHint}, "Fuzz Toggle", true));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"DISTORTION TOGGLE", versionHint}, "Distortion Toggle", true));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"FULL WAVE RECTIFIER TOGGLE", versionHint}, "Full Wave Rectifier Toggle", true));
     
@@ -212,10 +213,13 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     // ================= FUZZ ======================================
     // Fuzz
-    WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, effectParams.mFuzzGainArr[1]);
-    
-    // Output Volume
-    buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzVolumeArr[0], effectParams.mFuzzVolumeArr[1]);
+    if (effectParams.mFuzzEffectBool)
+    {
+        WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, effectParams.mFuzzGainArr[1]);
+        
+        // Output Volume
+        buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzVolumeArr[0], effectParams.mFuzzVolumeArr[1]);
+    }
     // =============================================================
     
     // ================= DISTORTION ================================
@@ -268,6 +272,7 @@ void CleanBlendDistortionAudioProcessor::updateEffectParameters()
     
     // Update new parameters
     // TODO: This could be refactored
+    effectParams.mFuzzEffectBool = apvts.getRawParameterValue("FUZZ TOGGLE")->load() > 0.5;
     effectParams.mDistortionEffectBool = apvts.getRawParameterValue("DISTORTION TOGGLE")->load() > 0.5;
     effectParams.mFullWaveRectifierBool = apvts.getRawParameterValue("FULL WAVE RECTIFIER TOGGLE")->load() > 0.5;
     effectParams.mFuzzGainArr[1] = juce::Decibels::decibelsToGain(apvts.getRawParameterValue("FUZZ GAIN")->load());

@@ -75,7 +75,7 @@ private:
     struct EffectParameters
     {
         // ====== ON/OFF ======
-        bool mDistortionEffectBool, mFullWaveRectifierBool;
+        bool mFuzzEffectBool, mDistortionEffectBool, mFullWaveRectifierBool;
         
         // ====== GAIN ======
         std::array<float, 2> mFuzzGainArr = {1.0, 1.0};

@@ -12,11 +12,12 @@
 #include "ButtonsAndDials.h"
 
 //==============================================================================
-ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDistortionEffectToggle(), mFullWaveRectifierToggle(), mFuzzGainSlider(), mFuzzVolumeSlider(), mDistortionGainSlider(), mDistortionVolumeSlider(), mDryFilterFreqSlider(), mDryFilterResSlider(), mWetDryMixRatioSlider(), mDistortionEffectToggleLabel(), mFullWaveRectifierToggleLabel(), mFuzzGainLabel(), mDryFilterFreqLabel(), mDryFilterResLabel(), mWetDryMixRatioLabel(), audioProcessor(p), mFuzzVoltageTransferObj(WaveShaping::EffectType::fuzz), mDistortionVoltageTransferObj(WaveShaping::EffectType::distortion)
+ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : audioProcessor(p), mFuzzVoltageTransferObj(WaveShaping::EffectType::fuzz), mDistortionVoltageTransferObj(WaveShaping::EffectType::distortion), mFWRVoltageTransferObj(WaveShaping::EffectType::fullWaveRectifier)
 {
     // Add toggle
-    addToggleWithLabel(&mDistortionEffectToggle, &mDistortionEffectToggleLabel, "Distortion");
-    addToggleWithLabel(&mFullWaveRectifierToggle, &mFullWaveRectifierToggleLabel, "Full Wave Rect");
+    addToggleWithLabel(&mFuzzEffectToggle, &mFuzzEffectToggleLabel, "On/Off");
+    addToggleWithLabel(&mDistortionEffectToggle, &mDistortionEffectToggleLabel, "On/Off");
+    addToggleWithLabel(&mFullWaveRectifierToggle, &mFullWaveRectifierToggleLabel, "On/Off");
     
     // Add sliders and labels
     addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mFuzzGainSlider, &mFuzzGainLabel, "Gain", WetDryChain::wet);
@@ -33,6 +34,8 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     
     // attach to Audio Processor Value Tree State
     // Buttons
+    mFuzzEffectToggleAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(), "FUZZ TOGGLE", mFuzzEffectToggle);
+    
     mDistortionEffectToggleAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(), "DISTORTION TOGGLE", mDistortionEffectToggle);
     
     mFullWaveRectifierToggleAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.getAPVTS(), "FULL WAVE RECTIFIER TOGGLE", mFullWaveRectifierToggle);
@@ -69,6 +72,15 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     mDistortionVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
     mDistortionVoltageTransferObjLabel.attachToComponent(&mDistortionVoltageTransferObj, false);
     addAndMakeVisible(mDistortionVoltageTransferObjLabel);
+    
+    // FWR Graphic
+    addAndMakeVisible(mFWRVoltageTransferObj);
+    // Add label
+    mFWRVoltageTransferObjLabel.setFont(15.f);
+    mFWRVoltageTransferObjLabel.setText("Full Wave Rectifier", juce::NotificationType::dontSendNotification);
+    mFWRVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
+    mFWRVoltageTransferObjLabel.attachToComponent(&mFWRVoltageTransferObj, false);
+    addAndMakeVisible(mFWRVoltageTransferObjLabel);
 }
 
 ButtonsAndDials::~ButtonsAndDials()
@@ -93,18 +105,20 @@ void ButtonsAndDials::resized()
     float n = 0;
     
     // Fuzz
-    mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);n++;
-    mFuzzGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);
+    mFuzzEffectToggle.setBoundsRelative(startX+n*dialWidth, startY+0.58f, dialWidth, 0.2);n+=1;
+    mFuzzGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n+=1;
     mFuzzVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
     
     // Distortion
-    mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);n++;
+    mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);
+    mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY+0.58f, dialWidth, 0.2);n+=1;
     mDistortionGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mDistortionVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
     
     // Toggles
-    mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight/2.0f);n+=0.0;
-    mFullWaveRectifierToggle.setBoundsRelative(startX+n*dialWidth, 3.0f*startY, dialWidth, dialHeight/2.0f);n++;
+    mFWRVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);
+    mFullWaveRectifierToggle.setBoundsRelative(startX+n*dialWidth, startY+0.58f, dialWidth, 0.2);n+=1;
     
     // Dry mixing
     mDryFilterFreqSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
