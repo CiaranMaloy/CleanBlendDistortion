@@ -211,13 +211,10 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     // =============================================================
     
     // ================= FUZZ ======================================
-    // Input Gain
-    //buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzGainArr[0], effectParams.mFuzzGainArr[1]);
     // Fuzz
     WaveShaping::process(WaveShaping::EffectType::fuzz, buffer, totalNumInputChannels, effectParams.mFuzzGainArr[1]);
     
-    // Output volume
-    // Input
+    // Output Volume
     buffer.applyGainRamp(0, buffer.getNumSamples(), effectParams.mFuzzVolumeArr[0], effectParams.mFuzzVolumeArr[1]);
     // =============================================================
     
@@ -237,11 +234,6 @@ void CleanBlendDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>&
     {
         WaveShaping::process(WaveShaping::EffectType::fullWaveRectifier, buffer, totalNumInputChannels);
     }
-    // =============================================================
-    
-    // ================ CLIP TRIGGER ===============================
-//    mMaxAbsVal = buffer.getMagnitude(0, buffer.getNumSamples());
-//    if (mMaxAbsVal > 1.0f) { mClipping = true; }
     // =============================================================
     
     // ================ LOW PASS FILTER ON DRY SIGNAL ===============

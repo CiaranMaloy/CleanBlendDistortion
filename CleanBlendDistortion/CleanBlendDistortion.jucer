@@ -6,6 +6,11 @@
               pluginVST3Category="Distortion" pluginAAXCategory="0" pluginVSTCategory="kPlugCategEffect">
   <MAINGROUP id="QPnidR" name="CleanBlendDistortion">
     <GROUP id="{4DDDE968-30DD-564A-D009-EA55B3D8796B}" name="Source">
+      <GROUP id="{CD6EDBA3-5C11-438A-D6FE-A2F4BC4EA9DA}" name="Tests">
+        <FILE id="RZfyMK" name="testWaveShape.cpp" compile="1" resource="0"
+              file="Source/testWaveShape.cpp"/>
+        <FILE id="lzSzjj" name="testWaveShape.h" compile="0" resource="0" file="Source/testWaveShape.h"/>
+      </GROUP>
       <GROUP id="{9C979A95-D39C-74E2-2131-DA4AA7FEF602}" name="Graphics">
         <FILE id="wTJEUn" name="ButtonsAndDials.cpp" compile="1" resource="0"
               file="Source/ButtonsAndDials.cpp"/>

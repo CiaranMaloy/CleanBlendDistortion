@@ -68,7 +68,6 @@ public:
     // ====== GUI Handover ======
     void fillCircularBuffer(juce::AudioBuffer<float>* Buffer, int channel, const int bufferLength, const int circBufferLength, const float* bufferData, const float* circBufferData);
 
-    // return an audio buffer that I can display on the GUI
     juce::AudioBuffer<float> getBufferForDisplay();
 
 private:
@@ -100,16 +99,11 @@ private:
     // ====== DSP ======
     juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> mLowPassFilter;
     
-    // ====== Triggers ======
-    float mMaxAbsVal {0.0};
-    bool mClipping = false;
-    
     // ====== APVTS ======
     juce::AudioProcessorValueTreeState apvts;
     juce::AudioProcessorValueTreeState::ParameterLayout createAPVTSParameterLayout();
     
     // ====== GUI Handover ======
-    // ====== circular buffer ======
     CircularBuffer mCircBuffer;
     
     //==============================================================================

@@ -76,14 +76,22 @@ void ButtonsAndDials::resized()
     const auto dialHeight = 0.75f;
     
     float n = 0;
-    mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    
+    // Fuzz
+    mFuzzVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);n++;
     mFuzzGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mFuzzVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
-    mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
+    
+    // Distortion
+    mDistortionVoltageTransferObj.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight*0.8);n++;
     mDistortionGainSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mDistortionVolumeSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth/2.0f, dialHeight);n+=0.5;
+    
+    // Toggles
     mDistortionEffectToggle.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight/2.0f);n+=0.0;
     mFullWaveRectifierToggle.setBoundsRelative(startX+n*dialWidth, 3.0f*startY, dialWidth, dialHeight/2.0f);n++;
+    
+    // Dry mixing
     mDryFilterFreqSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mDryFilterResSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);n++;
     mWetDryMixRatioSlider.setBoundsRelative(startX+n*dialWidth, startY, dialWidth, dialHeight);
