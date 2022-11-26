@@ -68,7 +68,9 @@ private:
     
     // ====== Visuals ======
     ViewVoltageTransfer mFuzzVoltageTransferObj;
+    juce::Label mFuzzVoltageTransferObjLabel;
     ViewVoltageTransfer mDistortionVoltageTransferObj;
+    juce::Label mDistortionVoltageTransferObjLabel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButtonsAndDials)
 };

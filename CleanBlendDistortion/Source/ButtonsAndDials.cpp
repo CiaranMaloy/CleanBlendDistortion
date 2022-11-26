@@ -19,10 +19,10 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     addToggleWithLabel(&mFullWaveRectifierToggle, &mFullWaveRectifierToggleLabel, "Full Wave Rect");
     
     // Add sliders and labels
-    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mFuzzGainSlider, &mFuzzGainLabel, "Fuzz Gain", WetDryChain::wet);
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mFuzzGainSlider, &mFuzzGainLabel, "Gain", WetDryChain::wet);
     addSliderWithLabel(juce::Slider::SliderStyle::LinearVertical, &mFuzzVolumeSlider, &mFuzzVolumeLabel, "Trim", WetDryChain::wet);
     
-    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDistortionGainSlider, &mDistortionGainLabel, "Distortion Gain", WetDryChain::wet);
+    addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDistortionGainSlider, &mDistortionGainLabel, "Gain", WetDryChain::wet);
     addSliderWithLabel(juce::Slider::SliderStyle::LinearVertical, &mDistortionVolumeSlider, &mDistortionVolumeLabel, "Trim", WetDryChain::wet);
     
     addSliderWithLabel(juce::Slider::SliderStyle::RotaryVerticalDrag, &mDryFilterFreqSlider, &mDryFilterFreqLabel, "Dry Filter Freq", WetDryChain::wet, 500.0f);
@@ -52,8 +52,23 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : mDisto
     mWetDryMixAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "WET/DRY", mWetDryMixRatioSlider);
     
     // Graphics
+    // Fuzz Graphic
     addAndMakeVisible(mFuzzVoltageTransferObj);
+    // Add label
+    mFuzzVoltageTransferObjLabel.setFont(15.f);
+    mFuzzVoltageTransferObjLabel.setText("Fuzz", juce::NotificationType::dontSendNotification);
+    mFuzzVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
+    mFuzzVoltageTransferObjLabel.attachToComponent(&mFuzzVoltageTransferObj, false);
+    addAndMakeVisible(mFuzzVoltageTransferObjLabel);
+    
+    // Distortion Graphic
     addAndMakeVisible(mDistortionVoltageTransferObj);
+    // Add label
+    mDistortionVoltageTransferObjLabel.setFont(15.f);
+    mDistortionVoltageTransferObjLabel.setText("Distortion", juce::NotificationType::dontSendNotification);
+    mDistortionVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
+    mDistortionVoltageTransferObjLabel.attachToComponent(&mDistortionVoltageTransferObj, false);
+    addAndMakeVisible(mDistortionVoltageTransferObjLabel);
 }
 
 ButtonsAndDials::~ButtonsAndDials()
