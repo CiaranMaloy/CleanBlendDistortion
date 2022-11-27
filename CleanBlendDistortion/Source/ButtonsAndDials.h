@@ -45,6 +45,7 @@ private:
     
     void addSliderWithLabel(juce::Slider::SliderStyle style, juce::Slider* sliderObj, juce::Label* labelObj, std::string labelText, WetDryChain selection, double centre_point=0);
     void addToggleWithLabel(juce::ToggleButton* toggleObj, juce::Label* labelObj, std::string label_text, double centre_point=0);
+    void addTransferObjWithLabel(ViewVoltageTransfer* trans, juce::Label* labelObj, std::string label_text);
     // ====== ======
     
     // ====== audio processor value tree state attachments =====

@@ -56,31 +56,13 @@ ButtonsAndDials::ButtonsAndDials(CleanBlendDistortionAudioProcessor& p) : audioP
     
     // Graphics
     // Fuzz Graphic
-    addAndMakeVisible(mFuzzVoltageTransferObj);
-    // Add label
-    mFuzzVoltageTransferObjLabel.setFont(15.f);
-    mFuzzVoltageTransferObjLabel.setText("Fuzz", juce::NotificationType::dontSendNotification);
-    mFuzzVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
-    mFuzzVoltageTransferObjLabel.attachToComponent(&mFuzzVoltageTransferObj, false);
-    addAndMakeVisible(mFuzzVoltageTransferObjLabel);
+    addTransferObjWithLabel(&mFuzzVoltageTransferObj, &mFuzzVoltageTransferObjLabel, "Fuzz");
     
     // Distortion Graphic
-    addAndMakeVisible(mDistortionVoltageTransferObj);
-    // Add label
-    mDistortionVoltageTransferObjLabel.setFont(15.f);
-    mDistortionVoltageTransferObjLabel.setText("Distortion", juce::NotificationType::dontSendNotification);
-    mDistortionVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
-    mDistortionVoltageTransferObjLabel.attachToComponent(&mDistortionVoltageTransferObj, false);
-    addAndMakeVisible(mDistortionVoltageTransferObjLabel);
+    addTransferObjWithLabel(&mDistortionVoltageTransferObj, &mDistortionVoltageTransferObjLabel, "Distortion");
     
     // FWR Graphic
-    addAndMakeVisible(mFWRVoltageTransferObj);
-    // Add label
-    mFWRVoltageTransferObjLabel.setFont(15.f);
-    mFWRVoltageTransferObjLabel.setText("Full Wave Rectifier", juce::NotificationType::dontSendNotification);
-    mFWRVoltageTransferObjLabel.setJustificationType(juce::Justification::horizontallyCentred);
-    mFWRVoltageTransferObjLabel.attachToComponent(&mFWRVoltageTransferObj, false);
-    addAndMakeVisible(mFWRVoltageTransferObjLabel);
+    addTransferObjWithLabel(&mFWRVoltageTransferObj, &mFWRVoltageTransferObjLabel, "FWR");
 }
 
 ButtonsAndDials::~ButtonsAndDials()
@@ -91,6 +73,21 @@ void ButtonsAndDials::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);   // clear the background
     g.setColour(juce::Colours::white);
+    
+    auto FuzzColour = mFuzzEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    mFuzzVoltageTransferObj.setColour(juce::Label::textColourId, FuzzColour);
+    mFuzzGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
+    mFuzzVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
+    
+    
+    
+    auto DistortionColour = mDistortionEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    mDistortionVoltageTransferObj.setColour(juce::Label::textColourId, DistortionColour);
+    mDistortionGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    mDistortionVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    
+    auto FullWaveRectifierColour = mFullWaveRectifierToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    
 }
 
 void ButtonsAndDials::resized()
@@ -166,6 +163,17 @@ void ButtonsAndDials::addToggleWithLabel(juce::ToggleButton* toggleObj, juce::La
     labelObj->setJustificationType(juce::Justification::centredRight);
     labelObj->attachToComponent(toggleObj, false);
     
+    addAndMakeVisible(labelObj);
+}
+
+void ButtonsAndDials::addTransferObjWithLabel(ViewVoltageTransfer* trans, juce::Label* labelObj, std::string label_text)
+{
+    addAndMakeVisible(trans);
+    // Add label
+    labelObj->setFont(15.f);
+    labelObj->setText(label_text, juce::NotificationType::dontSendNotification);
+    labelObj->setJustificationType(juce::Justification::horizontallyCentred);
+    labelObj->attachToComponent(trans, false);
     addAndMakeVisible(labelObj);
 }
 
