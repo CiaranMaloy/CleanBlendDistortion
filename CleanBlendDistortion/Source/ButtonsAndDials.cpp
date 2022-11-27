@@ -75,19 +75,21 @@ void ButtonsAndDials::paint (juce::Graphics& g)
     g.setColour(juce::Colours::white);
     
     auto FuzzColour = mFuzzEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
-    mFuzzVoltageTransferObj.setColour(juce::Label::textColourId, FuzzColour);
+    mFuzzVoltageTransferObjLabel.setColour(juce::Label::textColourId, FuzzColour);
     mFuzzGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
+    mFuzzGainLabel.setColour(juce::Label::textColourId, FuzzColour);
     mFuzzVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
-    
-    
+    mFuzzVolumeLabel.setColour(juce::Label::textColourId, FuzzColour);
     
     auto DistortionColour = mDistortionEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
-    mDistortionVoltageTransferObj.setColour(juce::Label::textColourId, DistortionColour);
+    mDistortionVoltageTransferObjLabel.setColour(juce::Label::textColourId, DistortionColour);
     mDistortionGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    mDistortionGainLabel.setColour(juce::Label::textColourId, DistortionColour);
     mDistortionVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    mDistortionVolumeLabel.setColour(juce::Label::textColourId, DistortionColour);
     
     auto FullWaveRectifierColour = mFullWaveRectifierToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
-    
+    mFWRVoltageTransferObjLabel.setColour(juce::Label::textColourId, FullWaveRectifierColour);
 }
 
 void ButtonsAndDials::resized()
