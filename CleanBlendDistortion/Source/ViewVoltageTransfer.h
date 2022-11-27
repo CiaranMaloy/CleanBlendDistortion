@@ -25,6 +25,8 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    void setLineColour(juce::Colour colour) {mSetColour = colour;};
+    
 
 private:
     // == rects
@@ -40,6 +42,7 @@ private:
     
     // == Settings
     WaveShaping::EffectType mInternalType;
+    juce::Colour mSetColour {juce::Colours::white};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ViewVoltageTransfer)
 };

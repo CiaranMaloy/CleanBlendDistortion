@@ -75,20 +75,30 @@ void ButtonsAndDials::paint (juce::Graphics& g)
     g.setColour(juce::Colours::white);
     
     auto FuzzColour = mFuzzEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    mFuzzVoltageTransferObj.setLineColour(FuzzColour);
+    mFuzzVoltageTransferObj.repaint();
     mFuzzVoltageTransferObjLabel.setColour(juce::Label::textColourId, FuzzColour);
     mFuzzGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
+    mFuzzGainSlider.setColour(juce::Slider::ColourIds::textBoxTextColourId, FuzzColour);
     mFuzzGainLabel.setColour(juce::Label::textColourId, FuzzColour);
     mFuzzVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, FuzzColour);
+    mFuzzVolumeSlider.setColour(juce::Slider::ColourIds::textBoxTextColourId, FuzzColour);
     mFuzzVolumeLabel.setColour(juce::Label::textColourId, FuzzColour);
     
     auto DistortionColour = mDistortionEffectToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    mDistortionVoltageTransferObj.setLineColour(DistortionColour);
+    mDistortionVoltageTransferObj.repaint();
     mDistortionVoltageTransferObjLabel.setColour(juce::Label::textColourId, DistortionColour);
     mDistortionGainSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    mDistortionGainSlider.setColour(juce::Slider::ColourIds::textBoxTextColourId, DistortionColour);
     mDistortionGainLabel.setColour(juce::Label::textColourId, DistortionColour);
     mDistortionVolumeSlider.setColour(juce::Slider::ColourIds::thumbColourId, DistortionColour);
+    mDistortionVolumeSlider.setColour(juce::Slider::ColourIds::textBoxTextColourId, DistortionColour);
     mDistortionVolumeLabel.setColour(juce::Label::textColourId, DistortionColour);
     
     auto FullWaveRectifierColour = mFullWaveRectifierToggle.getToggleState() ? juce::Colours::white : juce::Colours::grey;
+    mFWRVoltageTransferObj.setLineColour(FullWaveRectifierColour);
+    mFWRVoltageTransferObj.repaint();
     mFWRVoltageTransferObjLabel.setColour(juce::Label::textColourId, FullWaveRectifierColour);
 }
 
